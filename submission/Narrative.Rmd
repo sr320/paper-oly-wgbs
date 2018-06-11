@@ -8,3 +8,23 @@ output: html_document
 _Outplanting_
 Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound).
 
+
+Samples 
+1NF11
+1NF15
+1NF16
+1NF17
+2NF5
+2NF6
+2NF7
+2NF8
+
+
+
+
+
+_Draft Genome Assembly_
+A draft genome for the Olympia oyster was created using a combination of short read sequence data ( ) combined with long read sequence data using PBJelly (reference). 
+
+Sequence reads from the 5 mate paire libaries (list these out) were assembled using Soap Denov (ref). The scaffold (number) from this assembling were combined with a XXX of long read sequence data produced on xxxxx using PBJelly. 
+
