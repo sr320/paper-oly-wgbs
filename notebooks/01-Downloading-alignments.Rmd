@@ -1,0 +1,18 @@
+---
+title: "01-Alignment-download"
+output: html_document
+---
+
+
+
+```{bash}
+ls /Volumes/web-1/seashell/bu-mox/analyses/0308/ | grep "001"
+```
+
+
+
+
+```{bash}
+curl -O http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0308/8_ACTTGA_L001_R1_001-bsmap_out_jelly1k.sam > analyses/8_ACTTGA_L001_R1_001-bsmap_out_jelly1k.sam
+```
+

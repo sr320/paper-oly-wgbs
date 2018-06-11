@@ -5,4 +5,6 @@ output: html_document
 
 
 # Methods
+_Outplanting_
+Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound).
 
