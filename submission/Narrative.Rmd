@@ -28,3 +28,5 @@ A draft genome for the Olympia oyster was created using a combination of short r
 
 Sequence reads from the 5 mate paire libaries (list these out) were assembled using Soap Denov (ref). The scaffold (number) from this assembling were combined with a XXX of long read sequence data produced on xxxxx using PBJelly. 
 
+
+

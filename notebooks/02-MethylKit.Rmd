@@ -1,0 +1,198 @@
+---
+title: "Methylkit-02"
+output: html_document
+---
+
+```{r setup, include = FALSE }
+library(methylKit)
+```
+
+
+Getting bismark alignment files 
+
+```{bash}
+pwd
+```
+
+
+```{bash}
+mv /Users/sr320/Desktop/oly/*.sam ../analyses/
+```
+
+
+
+These were generated in Jupyter like:
+
+```
+%%bash
+find /Volumes/Serine/wd/18-04-27/zr2096_*R1* \
+| xargs basename -s _s1_R1_val_1.fq.gz | xargs -I{} /Applications/bioinfo/Bismark_v0.19.0/bismark \
+--path_to_bowtie /Applications/bioinfo/bowtie2-2.3.4.1-macos-x86_64 \
+--genome /Volumes/Serine/wd/18-03-15/genome \
+--score_min L,0,-1.2 \
+-p 4 \
+--non_directional \
+-1 /Volumes/Serine/wd/18-04-27/{}_s1_R1_val_1.fq.gz \
+-2 /Volumes/Serine/wd/18-04-27/{}_s1_R2_val_2.fq.gz \
+2> bismark.err
+
+```
+find /gscratch/srlab/sr320/data/olurida-bs/*gz \
+| xargs basename -s .fastq.gz | xargs -I{} /gscratch/srlab/programs/bsmap-2.89/bsmap \
+-a /gscratch/srlab/sr320/data/olurida-bs/{}.fastq.gz \
+-d /gscratch/srlab/sr320/data/olurida-bs/Ol-pbjelly1k.fa \
+-o /gscratch/srlab/sr320/analyses/0308/{}-bsmap_out_jelly1k.sam \
+-p 28
+```
+```
+
+
+```{bash}
+/Applications/bioinfo/Bismark_v0.19.0/deduplicate_bismark \
+--bam -p \
+*.bam \
+2> dedup.err
+```
+
+
+
+
+%%bash
+/Applications/bioinfo/Bismark_v0.19.0/deduplicate_bismark \
+--bam -p \
+*.bam \
+2> dedup.err
+
+%%bash
+find *deduplicated.bam \
+| xargs basename -s _s1_R1_val_1_bismark_bt2_pe.deduplicated.bam | xargs -I{} /Applications/bioinfo/samtools-1.3.1/samtools \
+sort {}_s1_R1_val_1_bismark_bt2_pe.deduplicated.bam -o {}_dedup.sorted.bam
+```
+
+Reading in some files: 
+
+
+```{r}
+file.list=list(  '/Users/sr320/Desktop/oakl/zr2096_1_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_2_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_3_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_4_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_5_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_6_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_7_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_8_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_9_dedup.sorted.bam',
+                 '/Users/sr320/Desktop/oakl/zr2096_10_dedup.sorted.bam'
+)
+```
+
+
+
+Bringing in bam files, setting context, AND coverage
+
+```{r, eval=FALSE}
+myobj = processBismarkAln(location = file.list, sample.id = list("1","2","3","4","5","6","7","8","9","10"), assembly = "v3", read.context="CpG", mincov=10, treatment = c(0,0,0,0,0,1,1,1,1,1))
+```
+
+```{r, eval=FALSE}
+save(myobj, file = "../analyses/myobj_180427files")
+```
+
+
+```{r}
+load("../analyses/myobj_180427files")
+```
+
+
+
+
+```{r}
+getCoverageStats(myobj[[4]],plot=TRUE,both.strands=FALSE)
+```
+
+
+
+```{r}
+getMethylationStats(myobj[[1]],plot=FALSE,both.strands=FALSE)
+```
+
+```{r}
+getCoverageStats(myobj[[4]],plot=TRUE,both.strands=FALSE)
+```
+
+```{r, cache=TRUE}
+meth=unite(myobj)
+```
+
+
+```{r}
+getCorrelation(meth,plot=TRUE)
+```
+```{r}
+clusterSamples(meth, dist="correlation", method="ward", plot=TRUE)
+
+```
+
+```{r}
+PCASamples(meth, screeplot=TRUE)
+```
+
+
+```{r, cache=TRUE}
+myDiff=calculateDiffMeth(meth)
+
+```
+
+```{r}
+myDiff50p=getMethylDiff(myDiff,difference=50,qvalue=0.01)
+
+```
+
+
+
+
+```{r}
+myDiff50p
+```
+
+```{r}
+write.table(myDiff50p, file = "../analyses/myDiff50p.tab", sep = "\t")
+```
+
+
+---
+# Taking the DMLs to a bed
+
+```{r}
+library(readr)
+myDiff50p <- read_csv("../analyses/myDiff50p.csv")
+ 
+```
+
+
+```{r}
+head(myDiff50p)
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+dml05251200plus <- filter(myDiff50p, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff)
+dml05251200minus <- filter(myDiff50p, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff)
+
+dml05251200.bed <- bind_rows(dml05251200plus, dml05251200minus) %>% arrange(chr, start) %>% 
+  mutate_if(is.numeric, as.integer) 
+#latter was done to refrain from writing as scientific notation
+
+
+dml05251200.bed
+write_delim(dml05251200.bed, "../analyses/dml05251200.bed",  delim = '\t', col_names = FALSE)
+```
+
+
+
