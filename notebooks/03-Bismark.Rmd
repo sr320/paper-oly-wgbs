@@ -5,10 +5,36 @@ output: html_document
 
 The intent of this Rmd is 
 
+```{bash}
+cp /Users/sr320/Downloads/QPX_v017.fasta ../tmp/QPX_v017.fasta
+```
+
+
 
 ```{bash}
 /Applications/bioinfo/Bismark_v0.19.0/bismark_genome_preparation \
 --path_to_bowtie /Applications/bioinfo/bowtie2-2.3.4.1-macos-x86_64 \
-/Volumes/Serine/wd/18-05-03/20180421_geoduck_hi-c/Results/geoduck_roberts\ results\ 2018-04-21\ 18:09:04.514704/
+../tmp/ \
+2> ../tmp/genomeprep.err
 ```
+
+
+
+```{bash}
+find /Users/sr320/Desktop/Qiagen/*R1_001.fastq.gz \
+| xargs basename -s _L001_R1_001.fastq.gz | xargs -I{} /Applications/bioinfo/Bismark_v0.19.0/bismark \
+--path_to_bowtie /Applications/bioinfo/bowtie2-2.3.4.1-macos-x86_64 \
+--genome ../tmp/ \
+--score_min L,0,-1.2 \
+-u 1000 \
+-p 4 \
+-1 /Users/sr320/Desktop/Qiagen/{}_L001_R1_001.fastq.gz \
+-2 /Users/sr320/Desktop/Qiagen/{}_L001_R1_001.fastq.gz \
+--output_dir ../tmp/df \
+
+
+```
+
+
+
 
