@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+Test of using GOOGLE DOCS in 'sync` with Rstudio / Github.
+
+
 # Methods
 _Outplanting_
 Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound).
@@ -30,3 +33,6 @@ Sequence reads from the 5 mate paire libaries (list these out) were assembled us
 
 
 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMjc5NTM4MTQxXX0=
+-->
