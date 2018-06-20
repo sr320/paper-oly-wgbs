@@ -331,6 +331,10 @@ getCorrelation(meth,plot=TRUE)
 ```
 
 
+```{r}
+clusterSamples
+```
+
 
 ```{r}
 clusterSamples(meth, dist="correlation", method="ward", plot=TRUE)
@@ -340,6 +344,12 @@ clusterSamples(meth, dist="correlation", method="ward", plot=TRUE)
 
 ```{r}
 clusterSamples(meth_3x, dist="correlation", method="ward", plot=TRUE)
+
+```
+
+
+```{r}
+clusterSamples(meth_3x, dist="euclidean", method="ward", plot=TRUE)
 
 ```
 
