@@ -216,3 +216,26 @@ find ../data/*deduplicated.bam \
 sort ../data/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data/{}_dedup.sorted.bam
 ```
 
+
+
+
+
+
+
+```{r}
+file.list=list(  '../data/1_ATCACG_dedup.sorted.bam',
+                 '../data/2_CGATGT_dedup.sorted.bam',
+                 '../data/3_TTAGGC_dedup.sorted.bam',
+                 '../data/4_TGACCA_dedup.sorted.bam',
+                 '../data/5_ACAGTG_dedup.sorted.bam',
+                 '../data/6_GCCAAT_dedup.sorted.bam',
+                 '../data/7_CAGATC_dedup.sorted.bam',
+                 '../data/8_ACTTGA_dedup.sorted.bam'
+)
+```
+
+
+
+
+
+
