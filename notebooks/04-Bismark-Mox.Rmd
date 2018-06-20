@@ -258,6 +258,34 @@ myobj_2 = processBismarkAln(location = file.list, sample.id = list("1","2","3","
 
 
 
+
+```{r}
+save(myobj_2, file = "../analyses/myobj_3x")
+
+```
+
+
+
+```{r}
+myobj_3 = processBismarkAln(location = file.list, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=5, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+
+
+
+```{r}
+save(myobj_3, file = "../analyses/myobj_5x")
+
+```
+
+
+
+
+
+
+
+
+
 ```{r}
 getCoverageStats(myobj[[4]],plot=TRUE,both.strands=FALSE)
 
@@ -286,6 +314,18 @@ meth=unite(myobj)
 
 
 ```{r}
+meth_3x=unite(myobj_2)
+```
+
+
+
+```{r}
+meth_5x=unite(myobj_3)
+```
+
+
+
+```{r}
 getCorrelation(meth,plot=TRUE)
 
 ```
@@ -296,6 +336,21 @@ getCorrelation(meth,plot=TRUE)
 clusterSamples(meth, dist="correlation", method="ward", plot=TRUE)
 
 ```
+
+
+```{r}
+clusterSamples(meth_3x, dist="correlation", method="ward", plot=TRUE)
+
+```
+
+
+
+
+```{r}
+clusterSamples(meth_5x, dist="correlation", method="ward", plot=TRUE)
+
+```
+
 
 
 ```{r}
@@ -325,6 +380,12 @@ myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
 ```{r}
 myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
 
+```
+
+
+
+```{r}
+myDiff25p
 ```
 
 
