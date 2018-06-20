@@ -326,3 +326,12 @@ myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
 myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
 
 ```
+
+
+
+
+```{r}
+myDiff50p
+
+```
+
