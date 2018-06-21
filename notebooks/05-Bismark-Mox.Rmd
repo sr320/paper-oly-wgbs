@@ -106,7 +106,7 @@ library(methylKit)
 ```{bash}
 find ../data_05/*deduplicated.bam \
 | xargs basename -s _L001_R1_001_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
-sort ../data/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_05/{}_dedup.sorted.bam
+sort ../data_05/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_05/{}_dedup.sorted.bam
 ```
 
 
@@ -136,9 +136,17 @@ save(myobj_05_10x, file = "../analyses/myobj_05_10x")
 
 ```
 
+```{r}
+meth_05_10x=unite(myobj_05_10x)
+```
 
+```{r}
+getCorrelation(meth_05_10x,plot=TRUE)
 
+```
 
+```{r}
+clusterSamples(meth_05_10x, dist="correlation", method="ward", plot=TRUE)
 
-
+```
 
