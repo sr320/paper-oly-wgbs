@@ -87,8 +87,48 @@ library(methylKit)
 ```
 
 
+
+
+
+
+
+
 ```{bash}
 find ../data_05/*deduplicated.bam \
 | xargs basename -s _L001_R1_001_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
 sort ../data/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_05/{}_dedup.sorted.bam
 ```
+
+
+
+
+```{r}
+file.list_05=list(  '../data_05/1_ATCACG_dedup.sorted.bam',
+                 '../data_05/2_CGATGT_dedup.sorted.bam',
+                 '../data_05/3_TTAGGC_dedup.sorted.bam',
+                 '../data_05/4_TGACCA_dedup.sorted.bam',
+                 '../data_05/5_ACAGTG_dedup.sorted.bam',
+                 '../data_05/6_GCCAAT_dedup.sorted.bam',
+                 '../data_05/7_CAGATC_dedup.sorted.bam',
+                 '../data_05/8_ACTTGA_dedup.sorted.bam'
+)
+```
+
+
+
+```{r}
+myobj_05_10x = processBismarkAln(location = file.list_05, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+
+```{r}
+save(myobj, file = "../analyses/myobj_10x")
+
+```
+
+
+
+
+
+
+
