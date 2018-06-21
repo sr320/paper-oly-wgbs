@@ -119,3 +119,23 @@ file.list_06=list(  '../data_06/1_ATCACG_dedup.sorted.bam',
 ```{r}
 myobj_06_10x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
 ```
+
+```{r}
+save(myobj_06_10x, file = "../analyses/myobj_06_10x")
+
+```
+
+
+```{r}
+meth_06_10x=unite(myobj_06_10x)
+```
+
+```{r}
+clusterSamples(meth_06_10x, dist="correlation", method="ward", plot=TRUE)
+
+```
+
+
+```{r}
+myobj_06_3x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
+```
