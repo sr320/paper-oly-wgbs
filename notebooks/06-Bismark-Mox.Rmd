@@ -94,3 +94,12 @@ curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/8_ACTT
 ```
 
 
+
+
+
+```{bash}
+find ../data_06/*deduplicated.bam \
+| xargs basename -s _L001_R1_001_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
+sort ../data_06/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_06/{}_dedup.sorted.bam
+```
+
