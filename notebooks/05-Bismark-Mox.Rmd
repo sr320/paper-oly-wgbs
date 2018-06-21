@@ -59,7 +59,17 @@ find /gscratch/srlab/sr320/data/olurida-bs/[1-8]_*.gz \
 output
 http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620/
 
-
+```
+[sr320@mox2 0620]$ cat *SE_report.txt | grep "Mapping"
+Mapping efficiency:	35.8%
+Mapping efficiency:	34.8%
+Mapping efficiency:	35.0%
+Mapping efficiency:	35.9%
+Mapping efficiency:	34.3%
+Mapping efficiency:	34.0%
+Mapping efficiency:	35.4%
+Mapping efficiency:	33.6%
+```
 
 
 
@@ -122,7 +132,7 @@ myobj_05_10x = processBismarkAln(location = file.list_05, sample.id = list("1","
 
 
 ```{r}
-save(myobj, file = "../analyses/myobj_10x")
+save(myobj_05_10x, file = "../analyses/myobj_05_10x")
 
 ```
 

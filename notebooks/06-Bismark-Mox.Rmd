@@ -56,3 +56,41 @@ find /gscratch/srlab/sr320/data/olurida-bs/[1-8]_*.gz \
 /gscratch/srlab/sr320/analyses/0620b/*deduplicated.bam
 
 ```
+
+
+output
+http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/
+
+
+
+```
+[sr320@mox2 0620b]$ cat *SE_report.txt | grep "Mapping"
+Mapping efficiency:	54.1%
+Mapping efficiency:	53.3%
+Mapping efficiency:	53.9%
+Mapping efficiency:	54.2%
+Mapping efficiency:	53.3%
+Mapping efficiency:	52.8%
+Mapping efficiency:	53.7%
+Mapping efficiency:	52.8%
+```
+
+
+
+## Downloading de-duplicated bams.
+
+
+
+```{bash}
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/1_ATCACG_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/2_CGATGT_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/3_TTAGGC_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/4_TGACCA_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/5_ACAGTG_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/6_GCCAAT_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/7_CAGATC_L001_R1_001_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/8_ACTTGA_L001_R1_001_bismark_bt2.deduplicated.bam
+
+```
+
+
