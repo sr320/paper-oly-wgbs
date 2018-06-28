@@ -8,10 +8,11 @@ Test of using GOOGLE DOCS in 'sync` with Rstudio / Github.
 
 
 # Methods
-_Outplanting_
+## _Outplanting_
 Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound).
 
 
+```
 Samples 
 1NF11
 1NF15
@@ -21,18 +22,17 @@ Samples
 2NF6
 2NF7
 2NF8
+```
 
 
 
 
-
-_Draft Genome Assembly_
+## _Draft Genome Assembly_
 A draft genome for the Olympia oyster was created using a combination of short read sequence data ( ) combined with long read sequence data using PBJelly (reference). 
 
 Sequence reads from the 5 mate paire libaries (list these out) were assembled using Soap Denov (ref). The scaffold (number) from this assembling were combined with a XXX of long read sequence data produced on xxxxx using PBJelly. 
 
 
-WORKCOPY
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjc5NTM4MTQxXX0=
