@@ -8,6 +8,7 @@ Test of using GOOGLE DOCS in 'sync` with Rstudio / Github.
 
 
 # Methods
+
 ## _Outplanting_
 Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound).
 
@@ -23,6 +24,9 @@ Samples
 2NF7
 2NF8
 ```
+
+
+## _Differential Methylation Analysis_
 
 
 
@@ -78,6 +82,3 @@ time python /home/shared/PBSuite_15.8.24/bin/Jelly.py assembly /home/sam/analyse
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py output /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
 
 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMjc5NTM4MTQxXX0=
--->
