@@ -27,7 +27,7 @@ Samples
 
 
 ## _Differential Methylation Analysis_
-
+TTTTTT tissue samples from four individuals from each cohort was dissected and DNA isolated using ?????????.  
 
 
 
