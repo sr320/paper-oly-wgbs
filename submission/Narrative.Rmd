@@ -27,12 +27,12 @@ Samples
 
 
 ## _Differential Methylation Analysis_
-Genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals from each cohort with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen).
+Genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals from each cohort with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen). Samples were quantified on a Qubit 3.0 (ThermoFisher) using the Qubit dsDNA BR assay (Invitrogen). Sample integrity was verified via agarose gel.
 
-Isolated DNA was subject to BS...
+Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes. Used 100ng of DNA, centrifugation steps were performed at 13,000g, and desulphonation incabation period was 20 minutes.
 
 
-Libraries were constructed...
+Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
 Sequencing was performed on..
 
