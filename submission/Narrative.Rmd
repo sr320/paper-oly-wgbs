@@ -34,7 +34,7 @@ Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-G
 
 Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
-Sequencing was performed on..
+Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads.
 
 Quality assessment of sequence data was carried out...
 
