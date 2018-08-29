@@ -4,16 +4,13 @@ output: html_document
 ---
 
 
-Test of using GOOGLE DOCS in 'sync` with Rstudio / Github.
-
-
 # Methods
 
 ## _Oysters_
 Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Briefly oysters were outplanted in August 2013 and collected in November 2015.
 
 
-## _Differential Methylation Analysis_
+## _DNA methylation Analysis_
 Genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals from each cohort with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen). Samples were quantified on a Qubit 3.0 (ThermoFisher) using the Qubit dsDNA BR assay (Invitrogen). Sample integrity was verified via agarose gel.
 
 Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes. Used 100ng of DNA, centrifugation steps were performed at 13,000g, and desulphonation incabation period was 20 minutes.
@@ -25,9 +22,24 @@ Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (I
 In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from both the 5' and 3' ends of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 
+-- ADD METHYLKIT information
+
+
+
+
+
+
 ## _Draft Genome Assembly_
 A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
 
 Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly.
 
-# Methods
+-- ADD ANNOTATION
+
+
+
+
+# Results
+
+_DNA methylation Analysis_
+Bisulfite treated DNA sequencing resulted in xxx average reads per library (NCBI citation).
