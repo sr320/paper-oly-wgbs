@@ -32,7 +32,7 @@ In preparation for bisufite mapping using Bismark (https://www.bioinformatics.ba
 ## _Draft Genome Assembly_
 A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
 
-Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly.
+Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
 
 -- ADD ANNOTATION
 
@@ -41,5 +41,5 @@ Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li e
 
 # Results
 
-_DNA methylation Analysis_
-Bisulfite treated DNA sequencing resulted in xxx average reads per library (NCBI citation).
+_DNA Sequence Data Availablity_
+Bisulfite treated DNA sequencing resulted in xxx average reads per library with data availabel (NCBI citation). 
