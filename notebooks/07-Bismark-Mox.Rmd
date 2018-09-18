@@ -189,9 +189,15 @@ file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
 ```
 
 
+```{r}
+library(methylKit)
+```
+
+
+
 
 ```{r}
-myobj_07_10x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
+myobj_07_10x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
 ```
 
 
@@ -200,21 +206,82 @@ myobj_07_10x = processBismarkAln(location = file.list_06, sample.id = list("1","
 
 
 ```{r}
-save(myobj_06_10x, file = "../analyses/myobj_06_10x")
+save(myobj_07_10x, file = "../analyses/myobj_07_10x")
 
 ```
 
 
 ```{r}
-meth_06_10x=unite(myobj_06_10x)
+meth_07_10x=unite(myobj_07_10x)
 ```
 
 ```{r}
-clusterSamples(meth_06_10x, dist="correlation", method="ward", plot=TRUE)
+clusterSamples(meth_07_10x, dist="correlation", method="ward", plot=TRUE)
 
 ```
 
 
 ```{r}
-myobj_06_3x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
+myobj_07_3x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
 ```
+
+
+
+```{r}
+save(myobj_07_3x, file = "../analyses/myobj_07_3x")
+
+```
+
+```{bash}
+zip ../analyses/myobj_07_3x.zip ../analyses/myobj_07_3x
+```
+
+
+```{bash}
+#unzip ../analyses/myobj_07_3x.zip
+```
+
+
+```{r}
+myDiff=calculateDiffMeth(meth_07_10x)
+
+```
+
+
+```{r}
+myDiff50p=getMethylDiff(myDiff,difference=50,qvalue=0.01)
+
+```
+
+
+
+```{r}
+myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+```
+
+```{r}
+myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
+
+```
+
+
+```{r}
+myDiff15p_B=getMethylDiff(myDiff,difference=15,qvalue=0.10)
+
+```
+
+
+```{r}
+myDiff25p
+```
+
+
+
+
+```{r}
+myDiff50p
+
+```
+
+
