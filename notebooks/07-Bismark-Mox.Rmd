@@ -238,8 +238,20 @@ zip ../analyses/myobj_07_3x.zip ../analyses/myobj_07_3x
 
 
 ```{bash}
-#unzip ../analyses/myobj_07_3x.zip
+unzip ../analyses/myobj_07_3x.zip
 ```
+
+
+```{r}
+load(myobj_07_3x)
+```
+
+
+
+
+
+
+
 
 
 ```{r}
