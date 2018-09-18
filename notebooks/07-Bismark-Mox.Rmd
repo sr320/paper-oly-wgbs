@@ -122,7 +122,6 @@ http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/
 
 
 
-```
 
 
 
@@ -166,27 +165,39 @@ curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1
 
 
 ```{bash}
-find ../data_06/*deduplicated.bam \
-| xargs basename -s _L001_R1_001_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
-sort ../data_06/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_06/{}_dedup.sorted.bam
+find ../data_07/*deduplicated.bam \
+| xargs basename -s _L001_R1_001_trimmed_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
+sort ../data_07/{}_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam \
+-@ 16 \
+-o ../data_07/{}_dedup.sorted.bam
 ```
+
+
+
+
+
 ```{r}
-file.list_06=list(  '../data_06/1_ATCACG_dedup.sorted.bam',
-                 '../data_06/2_CGATGT_dedup.sorted.bam',
-                 '../data_06/3_TTAGGC_dedup.sorted.bam',
-                 '../data_06/4_TGACCA_dedup.sorted.bam',
-                 '../data_06/5_ACAGTG_dedup.sorted.bam',
-                 '../data_06/6_GCCAAT_dedup.sorted.bam',
-                 '../data_06/7_CAGATC_dedup.sorted.bam',
-                 '../data_06/8_ACTTGA_dedup.sorted.bam'
+file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
+                 '../data_07/2_CGATGT_dedup.sorted.bam',
+                 '../data_07/3_TTAGGC_dedup.sorted.bam',
+                 '../data_07/4_TGACCA_dedup.sorted.bam',
+                 '../data_07/5_ACAGTG_dedup.sorted.bam',
+                 '../data_07/6_GCCAAT_dedup.sorted.bam',
+                 '../data_07/7_CAGATC_dedup.sorted.bam',
+                 '../data_07/8_ACTTGA_dedup.sorted.bam'
 )
 ```
 
 
 
 ```{r}
-myobj_06_10x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
+myobj_07_10x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
 ```
+
+
+
+
+
 
 ```{r}
 save(myobj_06_10x, file = "../analyses/myobj_06_10x")
