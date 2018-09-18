@@ -144,11 +144,16 @@ http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/
 
 
 
+```{r}
+getMethylationStats(myobj_07_3x[[2]],plot=FALSE,both.strands=FALSE)
+```
+
+
 
 
 
 ```{r}
-meth_07_10x=unite(myobj_07_10x)
+meth_07_3x=unite(myobj_07_3x)
 ```
 
 ```{r}
