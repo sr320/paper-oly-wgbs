@@ -1,12 +1,23 @@
 ---
-title: "07-Bismark-Mox"
+title: "08-Methylkit"
 output: html_document
 ---
+
+_This is carry over from nb 07 with a more focus on Methylkit_
+
 
 Running Bismark with  –score_min L,0,-0.6 
 Run by Sam
 
 http://onsnetwork.org/kubu4/2018/09/13/dna-methylation-analysis-olympia-oyster-whole-genome-bsseq-bismark-pipeline-comparison/
+
+
+
+
+```{r}
+library(methylKit)
+```
+
 
 
 ```
@@ -123,100 +134,17 @@ http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/
 
 
 
-
-
-## Downloading de-duplicated bams.
-
-
-```{bash}
-
+```{r}
+#myobj_07_10x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
 ```
-
-
-```{bash}
-pwd
-```
-
-
-```{bash}
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-```
-
-
-
-
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-
-
-
-
-```{bash}
-find ../data_07/*deduplicated.bam \
-| xargs basename -s _L001_R1_001_trimmed_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
-sort ../data_07/{}_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam \
--@ 16 \
--o ../data_07/{}_dedup.sorted.bam
-```
-
-
-
-
 
 ```{r}
-file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
-                 '../data_07/2_CGATGT_dedup.sorted.bam',
-                 '../data_07/3_TTAGGC_dedup.sorted.bam',
-                 '../data_07/4_TGACCA_dedup.sorted.bam',
-                 '../data_07/5_ACAGTG_dedup.sorted.bam',
-                 '../data_07/6_GCCAAT_dedup.sorted.bam',
-                 '../data_07/7_CAGATC_dedup.sorted.bam',
-                 '../data_07/8_ACTTGA_dedup.sorted.bam'
-)
-```
-
-
-```{r}
-source("https://bioconductor.org/biocLite.R")
-biocLite("methylKit")
+#myobj_07_3x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
 ```
 
 
 
 
-```{r}
-library(methylKit)
-```
-
-
-
-
-```{r}
-myobj_07_10x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
-```
-
-
-
-
-
-
-```{r}
-save(myobj_07_10x, file = "../analyses/myobj_07_10x")
-
-```
 
 
 ```{r}
