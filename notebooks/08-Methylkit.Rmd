@@ -39,8 +39,8 @@ getCoverageStats(myobj_07_3x[[4]],plot=TRUE,both.strands=FALSE)
 
 
 ```{r}
-filtered.myobj=filterByCoverage(myobj_07_3x,lo.count=3,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=90)
+filtered.myobj=filterByCoverage(myobj_07_3x,lo.count=2,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99)
 
 meth_filter=unite(filtered.myobj, destrand=FALSE)
 
