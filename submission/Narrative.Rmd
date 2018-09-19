@@ -36,7 +36,7 @@ Illumina sequencing libraries were constructed using the TruSeq DNA Methylation 
 
 Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
-In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from both the 5' and 3' ends of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 Trimmed reads were mapped to a draft genome (see below) using Bismark.
 
@@ -93,3 +93,5 @@ time python /home/shared/PBSuite_15.8.24/bin/Jelly.py support /home/sam/analyses
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py extraction /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py assembly /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py output /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
+
+#### Bismark code
