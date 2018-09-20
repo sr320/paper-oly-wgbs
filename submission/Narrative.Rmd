@@ -39,9 +39,9 @@ In preparation for bisufite mapping using Bismark (https://www.bioinformatics.ba
 
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
 
-All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster.
+All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File #1 for code.
 
-
+Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1), with a minimum of 3x coverage. All code and anlyses is available in the following GitHub repository: URL_NEEDED.
 
 
 ## _Draft Genome Assembly_
