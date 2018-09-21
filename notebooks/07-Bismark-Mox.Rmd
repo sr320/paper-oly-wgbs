@@ -258,10 +258,61 @@ load("analyses/myobj_07_3x")
 
 
 ```{r}
-tiles=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=1000)
+tiles=tileMethylCounts(myobj_07_3x,win.size=100000,step.size=100000)
 head(tiles[[1]],3)
 ```
 
+
+```{r}
+
+# Function
+tileit <- function(object, win.size=100, step.size=100, cov.bases=20) {
+  g.meth <- as(object,"GRanges")
+  chrs <- as.character(unique(seqnames(g.meth)))
+  grl <- split(g.meth, seqnames(g.meth))
+  max.length <- max(end(grl))
+  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
+  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
+  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
+  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
+  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
+  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
+  return(rcounts.filtered)
+}
+
+# Code to run function on methylKitList
+new.list <- lapply(myobj_07_3x, tileit)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj@treatment)
+```
+
+
+
+
+
+
+```{r}
+
+tiles=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=1000)
+head(tiles[[1]],3)
+
+
+tiles2=tileMethylCounts(myobj_07_3x,win.size=100,step.size=50)
+head(tiles2[[1]],3)
+
+
+tiles3=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=500)
+head(tiles3[[1]],3)
+
+
+
+tiles4=tileMethylCounts(myobj_07_3x,win.size=100,step.size=100)
+head(tiles4[[1]],3)
+
+
+
+tiles5=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=750)
+head5(tiles[[1]],3)
+```
 
 
 
