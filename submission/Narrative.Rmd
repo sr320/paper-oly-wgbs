@@ -43,3 +43,11 @@ Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li e
 
 _DNA Sequence Data Availablity_
 Bisulfite treated DNA sequencing resulted in xxx average reads per library with data availabel (NCBI citation). 
+
+
+
+Image showing Coverage and mCpG 
+![igv](https://github.com/sr320/nb-2018/blob/master/O_lurida/analyses/wgbs-igv.png?raw=true)
+
+`https://raw.githubusercontent.com/sr320/nb-2018/master/O_lurida/analyses/0919_igv_session.xml`
+
