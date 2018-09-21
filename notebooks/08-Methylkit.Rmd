@@ -39,10 +39,10 @@ getCoverageStats(myobj_07_3x[[4]],plot=TRUE,both.strands=FALSE)
 
 
 ```{r}
-filtered.myobj=filterByCoverage(myobj_07_3x,lo.count=2,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=99)
+filtered.myobj=filterByCoverage(myobj_07_3x,lo.count=3,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99.9)
 
-meth_filter=unite(filtered.myobj, destrand=FALSE)
+meth_filter=unite(filtered.myobj, destrand=TRUE)
 
 clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
 
@@ -116,46 +116,74 @@ meth_07_3x=unite(myobj_07_3x)
 ```
 
 
+
+
+
 ```{r}
-myDiff=calculateDiffMeth(meth_07_3x)
+myDiff=calculateDiffMeth(meth_filter,mc.cores=2)
 
 ```
 
 
-```{r}
-myDiff50p=getMethylDiff(myDiff,difference=50,qvalue=0.01)
-
-```
-
-
 
 ```{r}
+# get hyper methylated bases
+myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
 myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
 
-```
-
-```{r}
-myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
-
-```
 
 
-```{r}
-myDiff15p_B=getMethylDiff(myDiff,difference=15,qvalue=0.10)
-
-```
 
 
-```{r}
-myDiff25p
 ```
 
 
 
 
 ```{r}
-myDiff50p
-
+write.table(myDiff25p, file = "../analyses/myDiff25p.tab", sep = "\t")
 ```
+
+
+---
+# Taking the DMLs to a bed
+
+```{r}
+library(readr)
+myDiff25p <- read_csv("../analyses/myDiff25p.csv")
+ 
+```
+
+
+```{r}
+head(myDiff25p)
+```
+
+
+```{r}
+library(tidyr)
+```
+
+
+
+```{r}
+dml05251200plus <- filter(myDiff25p, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff)
+dml05251200minus <- filter(myDiff25p, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff)
+
+dml05251200.bed <- bind_rows(dml05251200plus, dml05251200minus) %>% arrange(chr, start) %>% 
+  mutate_if(is.numeric, as.integer) 
+#latter was done to refrain from writing as scientific notation
+
+
+dml05251200.bed
+write_delim(dml05251200.bed, "../analyses/dml05251200.bed",  delim = '\t', col_names = FALSE)
+```
+
 
 
