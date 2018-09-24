@@ -1,0 +1,69 @@
+---
+title: "Tiles"
+output: html_document
+---
+
+```{r}
+# Function
+tileit <- function(object, win.size=50, step.size=50, cov.bases=3) {
+  g.meth <- as(object,"GRanges")
+  chrs <- as.character(unique(seqnames(g.meth)))
+  grl <- split(g.meth, seqnames(g.meth))
+  max.length <- max(end(grl))
+  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
+  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
+  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
+  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
+  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
+  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
+  return(rcounts.filtered)
+}
+
+# Code to run function on methylKitList
+new.list <- lapply(myobj_07_3x, tileit)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj@treatment)
+```
+
+
+```{r}
+filtered.myobj=filterByCoverage(myobj.tiled,lo.count=3,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99.9)
+
+meth_filter=unite(filtered.myobj, destrand=TRUE)
+
+clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
+
+
+PCASamples(meth_filter)
+
+
+```
+
+
+
+
+
+
+```{r}
+myDiff=calculateDiffMeth(meth_filter,mc.cores=8)
+
+```
+
+
+
+```{r}
+# get hyper methylated bases
+myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
+myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+
+```
+
+
+

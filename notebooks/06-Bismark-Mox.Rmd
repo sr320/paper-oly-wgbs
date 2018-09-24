@@ -81,7 +81,7 @@ Mapping efficiency:	52.8%
 
 
 
-```{bash}
+```{bash, eval = FALSE}
 curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/1_ATCACG_L001_R1_001_bismark_bt2.deduplicated.bam
 curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/2_CGATGT_L001_R1_001_bismark_bt2.deduplicated.bam
 curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/3_TTAGGC_L001_R1_001_bismark_bt2.deduplicated.bam
@@ -97,7 +97,7 @@ curl -O  http://gannet.fish.washington.edu/seashell/bu-mox/analyses/0620b/8_ACTT
 
 
 
-```{bash}
+```{bash, eval = FALSE}
 find ../data_06/*deduplicated.bam \
 | xargs basename -s _L001_R1_001_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
 sort ../data_06/{}_L001_R1_001_bismark_bt2.deduplicated.bam -o ../data_06/{}_dedup.sorted.bam
@@ -116,18 +116,32 @@ file.list_06=list(  '../data_06/1_ATCACG_dedup.sorted.bam',
 
 
 
-```{r}
+```{r, eval = FALSE}
 myobj_06_10x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
 ```
 
-```{r}
+```{r, eval = FALSE}
 save(myobj_06_10x, file = "../analyses/myobj_06_10x")
 
 ```
 
 
 ```{r}
-meth_06_10x=unite(myobj_06_10x)
+load("../analyses/myobj_10x")
+```
+
+
+
+
+```{r setup, include = FALSE }
+library(methylKit)
+```
+
+
+
+
+```{r}
+meth_06_10x <- unite(myobj_06_10x)
 ```
 
 ```{r}
@@ -138,4 +152,19 @@ clusterSamples(meth_06_10x, dist="correlation", method="ward", plot=TRUE)
 
 ```{r}
 myobj_06_3x = processBismarkAln(location = file.list_06, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+
+
+
+
+
+
+```{r}
+meth_06_3x=unite(myobj_06_3x)
+```
+
+```{r}
+clusterSamples(meth_06_3x, dist="correlation", method="ward", plot=TRUE)
+
 ```

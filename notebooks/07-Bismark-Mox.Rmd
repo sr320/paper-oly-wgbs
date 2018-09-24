@@ -1,0 +1,368 @@
+---
+title: "07-Bismark-Mox"
+output: html_document
+---
+
+Running Bismark with  –score_min L,0,-0.6 
+Run by Sam
+
+http://onsnetwork.org/kubu4/2018/09/13/dna-methylation-analysis-olympia-oyster-whole-genome-bsseq-bismark-pipeline-comparison/
+
+
+```
+#!/bin/bash
+## Job Name
+#SBATCH --job-name=20180913_bismark
+## Allocation Definition
+#SBATCH --account=srlab
+#SBATCH --partition=srlab
+## Resources
+## Nodes
+#SBATCH --nodes=1
+## Walltime (days-hours:minutes:seconds format)
+#SBATCH --time=30-00:00:00
+## Memory per node
+#SBATCH --mem=120G
+##turn on e-mail notification
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=samwhite@uw.edu
+## Specify the working directory for this job
+#SBATCH --workdir=/gscratch/scrubbed/samwhite/20180913_oly_WGBSseq_bismark
+
+# Load Python Mox module for Python module availability
+
+module load intel-python3_2017
+
+# Document programs in PATH (primarily for program version ID)
+
+date >> system_path.log
+echo "" >> system_path.log
+echo "System PATH for $SLURM_JOB_ID" >> system_path.log
+echo "" >> system_path.log
+printf "%0.s-" {1..10} >> system_path.log
+echo ${PATH} | tr : \\n >> system_path.log
+
+
+# Directories and programs
+
+bismark_dir="/gscratch/srlab/programs/Bismark-0.19.0"
+trimmed="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/whole_genome_BSseq_reads/20180830_trimgalore"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+genome="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/20180503_oly_genome_pbjelly_sjw_01_bismark/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+
+# Run bismark using bisulftie-converted genome
+# Converted genome from 20180503 - by me:
+# http://onsnetwork.org/kubu4/2018/05/08/bs-seq-mapping-olympia-oyster-bisulfite-sequencing-trimgalore-fastqc-bismark/
+
+${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+--genome ${genome} \
+--score_min L,0,-0.6 \
+-p 28 \
+--non_directional \
+${trimmed}/1_ATCACG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/2_CGATGT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/3_TTAGGC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/4_TGACCA_L001_R1_001_trimmed.fq.gz \
+${trimmed}/5_ACAGTG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/6_GCCAAT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/7_CAGATC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/8_ACTTGA_L001_R1_001_trimmed.fq.gz
+
+# Deduplicate bam files
+
+${bismark_dir}/deduplicate_bismark \
+--bam \
+--single \
+*.bam
+
+# Methylation extraction
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedgraph \
+--counts \
+--scaffolds \
+--remove_spaces \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} /home/shared/samtools-1.8/samtools \
+index -@ 28 {}.sorted.bam
+
+
+```
+
+
+output
+http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/
+
+
+
+
+
+
+
+## Downloading de-duplicated bams.
+
+
+```{bash}
+
+```
+
+
+```{bash}
+pwd
+```
+
+
+```{bash}
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+```
+
+
+
+
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+
+
+
+
+```{bash}
+find ../data_07/*deduplicated.bam \
+| xargs basename -s _L001_R1_001_trimmed_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
+sort ../data_07/{}_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam \
+-@ 16 \
+-o ../data_07/{}_dedup.sorted.bam
+```
+
+
+
+
+
+```{r}
+file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
+                 '../data_07/2_CGATGT_dedup.sorted.bam',
+                 '../data_07/3_TTAGGC_dedup.sorted.bam',
+                 '../data_07/4_TGACCA_dedup.sorted.bam',
+                 '../data_07/5_ACAGTG_dedup.sorted.bam',
+                 '../data_07/6_GCCAAT_dedup.sorted.bam',
+                 '../data_07/7_CAGATC_dedup.sorted.bam',
+                 '../data_07/8_ACTTGA_dedup.sorted.bam'
+)
+```
+
+
+```{r}
+source("https://bioconductor.org/biocLite.R")
+biocLite("methylKit")
+```
+
+
+
+
+```{r}
+library(methylKit)
+```
+
+
+
+
+```{r}
+myobj_07_10x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+
+
+
+
+
+```{r}
+save(myobj_07_10x, file = "../analyses/myobj_07_10x")
+
+```
+
+
+```{r}
+meth_07_10x=unite(myobj_07_10x)
+```
+
+```{r}
+clusterSamples(meth_07_10x, dist="correlation", method="ward", plot=TRUE)
+
+```
+
+
+```{r}
+myobj_07_3x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+
+
+```{r}
+save(myobj_07_3x, file = "../analyses/myobj_07_3x")
+
+```
+
+```{bash}
+zip ../analyses/myobj_07_3x.zip ../analyses/myobj_07_3x
+```
+
+
+```{bash}
+unzip ../analyses/myobj_07_3x.zip
+```
+
+
+```{r}
+load("analyses/myobj_07_3x")
+```
+
+
+
+
+```{r}
+tiles=tileMethylCounts(myobj_07_3x,win.size=100000,step.size=100000)
+head(tiles[[1]],3)
+```
+
+
+```{r}
+# Function
+tileit <- function(object, win.size=100, step.size=100, cov.bases=20) {
+  g.meth <- as(object,"GRanges")
+  chrs <- as.character(unique(seqnames(g.meth)))
+  grl <- split(g.meth, seqnames(g.meth))
+  max.length <- max(end(grl))
+  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
+  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
+  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
+  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
+  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
+  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
+  return(rcounts.filtered)
+}
+
+# Code to run function on methylKitList
+new.list <- lapply(myobj_07_3x, tileit)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj@treatment)
+```
+
+
+
+
+
+
+```{r}
+
+tiles=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=1000)
+head(tiles[[1]],3)
+
+
+tiles2=tileMethylCounts(myobj_07_3x,win.size=100,step.size=50)
+head(tiles2[[1]],3)
+
+
+tiles3=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=500)
+head(tiles3[[1]],3)
+
+
+
+tiles4=tileMethylCounts(myobj_07_3x,win.size=100,step.size=100)
+head(tiles4[[1]],3)
+
+
+
+tiles5=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=750)
+head5(tiles[[1]],3)
+```
+
+
+
+
+
+
+```{r}
+meth_07_3x=unite(myobj_07_3x)
+```
+
+
+```{r}
+myDiff=calculateDiffMeth(meth_07_3x)
+
+```
+
+
+```{r}
+myDiff50p=getMethylDiff(myDiff,difference=50,qvalue=0.01)
+
+```
+
+
+
+```{r}
+myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+```
+
+```{r}
+myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
+
+```
+
+
+```{r}
+myDiff15p_B=getMethylDiff(myDiff,difference=15,qvalue=0.10)
+
+```
+
+
+```{r}
+myDiff25p
+```
+
+
+
+
+```{r}
+myDiff50p
+
+```
+
+
