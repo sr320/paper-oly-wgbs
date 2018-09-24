@@ -15,6 +15,14 @@ Genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from f
 
 Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes. Used 100ng of DNA, centrifugation steps were performed at 13,000g, and desulphonation incabation period was 20 minutes.
 
+Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
+
+Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+
+In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+
+Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
+=======
 Sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
 Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads.
@@ -26,10 +34,51 @@ In preparation for bisufite mapping using Bismark (https://www.bioinformatics.ba
 
 
 
+All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File #1 for code.
 
+Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1), with a minimum of 3x coverage. All code and anlyses is available in the following GitHub repository: URL_NEEDED.
 
 
 ## _Draft Genome Assembly_
+
+A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
+
+Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly.
+
+
+Refs
+
+PBJelly - https://doi.org/10.1371/journal.pone.0047768
+
+SOAPdenovo - https://doi.org/10.1093/bioinformatics/btn025
+
+## SUPPLEMENTAL FILE #1
+
+---
+
+#### PBJelly Protocol.xml
+```
+<jellyProtocol>
+    <reference>/home/sam/data/oly_BGI_scaffolds.fasta</reference>  
+    <outputDir>/home/sam/analyses/20171130_oly_pbjelly</outputDir>
+    <blasr>-minMatch 8 -minPctIdentity 70 -bestn 1 -nCandidates 20 -maxScore -500 -nproc 48 -noSplitSubreads</blasr>
+    <input baseDir="/home/sam/data/">
+        <job>m130619_081336_42134_c100525122550000001823081109281326_s1_p0.fastq</job>
+        <job>m170211_224036_42134_c101073082550000001823236402101737_s1_X0_filtered_subreads.fastq</job>
+	<job>m170301_100013_42134_c101174162550000001823269408211761_s1_p0_filtered_subreads.fastq</job>
+	<job>m170301_162825_42134_c101174162550000001823269408211762_s1_p0_filtered_subreads.fastq</job>
+	<job>m170301_225711_42134_c101174162550000001823269408211763_s1_p0_filtered_subreads.fastq</job>
+	<job>m170308_163922_42134_c101174252550000001823269408211742_s1_p0_filtered_subreads.fastq</job>
+	<job>m170308_230815_42134_c101174252550000001823269408211743_s1_p0_filtered_subreads.fastq</job>
+	<job>m170315_001112_42134_c101169372550000001823273008151717_s1_p0_filtered_subreads.fastq</job>
+	<job>m170315_063041_42134_c101169382550000001823273008151700_s1_p0_filtered_subreads.fastq</job>
+	<job>m170315_124938_42134_c101169382550000001823273008151701_s1_p0_filtered_subreads.fastq</job>
+	<job>m170315_190851_42134_c101169382550000001823273008151702_s1_p0_filtered_subreads.fastq</job>
+    </input>
+</jellyProtocol>
+```
+
+---
 A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
 
 Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
@@ -48,6 +97,85 @@ Bisulfite treated DNA sequencing resulted in xxx average reads per library with 
 
 Image showing Coverage and mCpG 
 ![igv](https://github.com/sr320/nb-2018/blob/master/O_lurida/analyses/wgbs-igv.png?raw=true)
+
+
+
+
+#### Bismark code
+
+# Prep genome
+/home/shared/Bismark-0.19.1/bismark_genome_preparation \
+--path_to_bowtie /home/shared/bowtie2-2.3.4.1-linux-x86_64/ \
+--verbose /home/sam/data/oly_methylseq/oly_genome/ \
+2> 20180507_bismark_genome_prep.err
+
+# Directories and programs
+
+bismark_dir="/gscratch/srlab/programs/Bismark-0.19.0"
+trimmed="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/whole_genome_BSseq_reads/20180830_trimgalore"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+genome="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/20180503_oly_genome_pbjelly_sjw_01_bismark/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+
+${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+--genome ${genome} \
+--score_min L,0,-0.6 \
+-p 28 \
+--non_directional \
+${trimmed}/1_ATCACG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/2_CGATGT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/3_TTAGGC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/4_TGACCA_L001_R1_001_trimmed.fq.gz \
+${trimmed}/5_ACAGTG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/6_GCCAAT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/7_CAGATC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/8_ACTTGA_L001_R1_001_trimmed.fq.gz
+
+# Deduplicate bam files
+
+${bismark_dir}/deduplicate_bismark \
+--bam \
+--single \
+*.bam
+
+# Methylation extraction
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedgraph \
+--counts \
+--scaffolds \
+--remove_spaces \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+
+---
+
 
 `https://raw.githubusercontent.com/sr320/nb-2018/master/O_lurida/analyses/0919_igv_session.xml`
 
