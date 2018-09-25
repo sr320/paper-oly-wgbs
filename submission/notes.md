@@ -97,3 +97,86 @@ time python /home/shared/PBSuite_15.8.24/bin/Jelly.py support /home/sam/analyses
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py extraction /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py assembly /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
 time python /home/shared/PBSuite_15.8.24/bin/Jelly.py output /home/sam/analyses/20171130_oly_pbjelly/Protocol.xml
+
+
+
+---
+
+
+#### Bismark code
+
+# Prep genome
+/home/shared/Bismark-0.19.1/bismark_genome_preparation \
+--path_to_bowtie /home/shared/bowtie2-2.3.4.1-linux-x86_64/ \
+--verbose /home/sam/data/oly_methylseq/oly_genome/ \
+2> 20180507_bismark_genome_prep.err
+
+# Directories and programs
+
+bismark_dir="/gscratch/srlab/programs/Bismark-0.19.0"
+trimmed="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/whole_genome_BSseq_reads/20180830_trimgalore"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+genome="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/20180503_oly_genome_pbjelly_sjw_01_bismark/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+
+${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+--genome ${genome} \
+--score_min L,0,-0.6 \
+-p 28 \
+--non_directional \
+${trimmed}/1_ATCACG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/2_CGATGT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/3_TTAGGC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/4_TGACCA_L001_R1_001_trimmed.fq.gz \
+${trimmed}/5_ACAGTG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/6_GCCAAT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/7_CAGATC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/8_ACTTGA_L001_R1_001_trimmed.fq.gz
+
+# Deduplicate bam files
+
+${bismark_dir}/deduplicate_bismark \
+--bam \
+--single \
+*.bam
+
+# Methylation extraction
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedgraph \
+--counts \
+--scaffolds \
+--remove_spaces \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+
+---
+
+
+`https://raw.githubusercontent.com/sr320/nb-2018/master/O_lurida/analyses/0919_igv_session.xml`
