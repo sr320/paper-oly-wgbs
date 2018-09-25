@@ -178,5 +178,13 @@ index -@ 28 {}.sorted.bam
 
 ---
 
+Refs
+
+PBJelly - https://doi.org/10.1371/journal.pone.0047768
+
+SOAPdenovo - https://doi.org/10.1093/bioinformatics/btn025
+
+## SUPPLEMENTAL FILE #1
+
 
 `https://raw.githubusercontent.com/sr320/nb-2018/master/O_lurida/analyses/0919_igv_session.xml`

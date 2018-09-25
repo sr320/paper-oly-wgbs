@@ -7,64 +7,42 @@ output: html_document
 # Methods
 
 ## _Oysters_
-Adult olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Briefly oysters were outplanted in August 2013 and collected in November 2015.
+Adult Olympia oyster originally from Fidalgo Bay, in North Puget Sound were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Briefly oysters were outplanted in August 2013 and collected in November 2015.
 
 
 ## _DNA methylation Analysis_
-Genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals from each cohort with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen). Samples were quantified on a Qubit 3.0 (ThermoFisher) using the Qubit dsDNA BR assay (Invitrogen). Sample integrity was verified via agarose gel.
+At the end of grow out period, genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals grown in Fidalgo Bay and four individuals grown in Oyster Bay with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen). Samples were quantified on a Qubit 3.0 (ThermoFisher) using the Qubit dsDNA BR assay (Invitrogen). Sample integrity was verified via agarose gel.
 
-Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes. Used 100ng of DNA, centrifugation steps were performed at 13,000g, and desulphonation incabation period was 20 minutes.
+Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes. Used 100ng of DNA, centrifugation steps were performed at 13,000g, and desulphonation incubation period was 20 minutes.
 
 Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
 Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+
+
+
+## _Draft Genome Assembly_
+
+A draft genome was generated in order to map bisulfite sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
+
+Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
+
+
+
+
 
 In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
 
 
-
-
-Sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
-
-Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads.
-
-In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from both the 5' and 3' ends of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
-
-
--- ADD METHYLKIT information
-
-
-
 All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File #1 for code.
 
-Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1), with a minimum of 3x coverage. All code and anlyses is available in the following GitHub repository: URL_NEEDED.
-
-
-## _Draft Genome Assembly_
-
-A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
-
-Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly.
-
-
-Refs
-
-PBJelly - https://doi.org/10.1371/journal.pone.0047768
-
-SOAPdenovo - https://doi.org/10.1093/bioinformatics/btn025
-
-## SUPPLEMENTAL FILE #1
-
----
+Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1), with a minimum of 3x coverage. All code and analyses is available in the following GitHub repository: URL_NEEDED.
 
 
 
----
-A draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
 
-Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
 
 -- ADD ANNOTATION
 
