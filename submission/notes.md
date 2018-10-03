@@ -60,6 +60,10 @@ PBJelly - https://doi.org/10.1371/journal.pone.0047768
 
 SOAPdenovo - https://doi.org/10.1093/bioinformatics/btn025
 
+methylKit - https://doi.org/10.1186/gb-2012-13-10-r87
+
+
+
 ## SUPPLEMENTAL FILE #1
 
 ---
