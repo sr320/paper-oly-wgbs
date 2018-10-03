@@ -52,7 +52,7 @@ Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio
 # Results
 
 _DNA Sequence Data Availablity_
-Bisulfite treated DNA sequencing resulted in xxx average reads per library with data availabel (NCBI citation).
+Bisulfite treated DNA sequencing resulted in xxx average reads per library. (NCBI SRA accession: SRP163248).
 
 
 
