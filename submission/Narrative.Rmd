@@ -52,6 +52,9 @@ Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio
 # Results
 
 _DNA Sequence Data Availablity_
+
+Genome assembly data were compiled using QUAST (v4.5; Gurevich et al, 2013). The assembly yielded 213,264 contigs, comprised of 1,180,563,613bp with an N50 of 12,433. The assembly contained 894 contigs >= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
+
 Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library. (NCBI SRA accession: SRP163248).
 
 
