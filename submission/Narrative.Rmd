@@ -17,28 +17,28 @@ Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-G
 
 Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
-Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+Sequencing was performed by Genewiz, Inc. in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Raw sequence reads were deposited in the NCBI Short Read Archive (NCBI SRA: SRP163248). Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 
 
 ## _Draft Genome Assembly_
 
-A draft genome was generated in order to map bisulfite sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (English et al, 2012).
+A draft genome was generated in order to map bisulfite sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012).
 
-Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
-
-
+Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
 
 
 
-In preparation for bisufite mapping using Bismark (https://www.bioinformatics.babraham.ac.uk/projects/bismark/), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+
+
+In preparation for bisufite mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
 
 
 All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File #1 for code.
 
-Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1), with a minimum of 3x coverage. All code and analyses is available in the following GitHub repository: URL_NEEDED.
+Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 3x coverage. All code and analyses is available in the following GitHub repository: URL_NEEDED.
 
 
 
@@ -52,7 +52,10 @@ Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio
 # Results
 
 _DNA Sequence Data Availablity_
-Bisulfite treated DNA sequencing resulted in xxx average reads per library with data availabel (NCBI citation).
+
+Genome assembly data were compiled using QUAST (v4.5; Gurevich et al, 2013). The assembly yielded 213,264 contigs, comprised of 1,180,563,613bp with an N50 of 12,433. The assembly contained 894 contigs >= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
+
+Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library..
 
 
 
