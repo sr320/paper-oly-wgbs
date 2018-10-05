@@ -23,15 +23,13 @@ Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50b
 
 ## _Draft Genome Assembly_
 
-A draft genome was generated in order to map bisulfite sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012).
+A draft genome was generated in order to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012).
 
 Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
+Genome assembly data were compiled using QUAST (v4.5; Gurevich et al, 2013).
 
 
-
-
-
-In preparation for bisufite mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
 
@@ -44,7 +42,7 @@ Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio
 
 
 
--- ADD ANNOTATION
+-- ADD ANNOTATION METHODS
 
 
 
@@ -53,9 +51,16 @@ Identification of differentially methylated loci (DML) using R (v3.4.4; R Studio
 
 _DNA Sequence Data Availablity_
 
-Genome assembly data were compiled using QUAST (v4.5; Gurevich et al, 2013). The assembly yielded 213,264 contigs, comprised of 1,180,563,613bp with an N50 of 12,433. The assembly contained 894 contigs >= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
+Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library. The draft genome assembly yielded 213,264 contigs, comprised of 1.2Mbp with an N50 of 12,433. The assembly contained 894 contigs >= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
 
-Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library..
+--- ADD % MAPPING
+
+--- ADD number of loci different
+
+--- ADD number of regions different 
+
+--- Describe location of DML and DMRs
+
 
 
 
