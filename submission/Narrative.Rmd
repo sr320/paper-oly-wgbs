@@ -59,7 +59,7 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 
 --- ADD number of regions different 
 
---- Describe location of DML and DMRs
+--- Describe location of DML and DMRs with regard to genes etc
 
 
 
