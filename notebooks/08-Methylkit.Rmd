@@ -167,22 +167,17 @@ head(myDiff25p)
 
 
 ```{r}
-library(tidyr)
+library(tidyverse)
 ```
 
 
 
 ```{r}
-dml05251200plus <- filter(myDiff25p, strand == "+") %>% mutate(start = start -1, end = end + 1) %>% select(chr, start, end, strand, meth.diff)
-dml05251200minus <- filter(myDiff25p, strand == "-") %>% mutate(start = start -2) %>% select(chr, start, end, strand, meth.diff)
-
-dml05251200.bed <- bind_rows(dml05251200plus, dml05251200minus) %>% arrange(chr, start) %>% 
+dml1010 <-  mutate(myDiff25p, start = start -1, end = end + 1) %>% select(chr, start, end, meth.diff) %>% 
   mutate_if(is.numeric, as.integer) 
-#latter was done to refrain from writing as scientific notation
 
 
-dml05251200.bed
-write_delim(dml05251200.bed, "../analyses/dml05251200.bed",  delim = '\t', col_names = FALSE)
+#write_delim(dml05251200.bed, "../analyses/dml05251200.bed",  delim = '\t', col_names = FALSE)
 ```
 
 
