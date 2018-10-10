@@ -55,14 +55,16 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 
 --- ADD % MAPPING
 
---- ADD number of loci different
-
---- ADD number of regions different 
 
 --- Describe location of DML and DMRs with regard to genes etc
 
 
 _Differential Methylation_
+
+
+---How much of the genome is covered, how many CpGs
+
+---How many loci examined - I think 23,478
 
 Twenty seven differenially methylated loci were identified that span 12 contigs. A majority of the DMLs (15)
 are located on Contig35213.
