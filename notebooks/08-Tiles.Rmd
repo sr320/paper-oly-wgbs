@@ -121,3 +121,11 @@ write_delim(dml1010.tile, "../analyses/dml010.tile.bed",  delim = '\t', col_name
 ```
 
 
+```{bash}
+wc -l ../analyses/dml010.tile.bed
+```
+
+```{bash}
+sort ../analyses/dml010.tile.bed | cut -f1 |  uniq | wc -l
+```
+
