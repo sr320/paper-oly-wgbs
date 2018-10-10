@@ -177,55 +177,8 @@ dml1010 <-  mutate(myDiff25p, start = start -1, end = end + 1) %>% select(chr, s
   mutate_if(is.numeric, as.integer) 
 
 
-#write_delim(dml05251200.bed, "../analyses/dml05251200.bed",  delim = '\t', col_names = FALSE)
+write_delim(dml1010, "../analyses/dml010.bed",  delim = '\t', col_names = FALSE)
 ```
 
 
-
-
-# tiles
-
-
-
-
-
-
-```{r}
-filtered.myobj=filterByCoverage(myobj.tiled,lo.count=NULL,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=99.9)
-
-meth_filter=unite(filtered.myobj, destrand=TRUE)
-
-clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
-
-
-PCASamples(meth_filter)
-
-
-```
-
-
-```{r}
-myDiff=calculateDiffMeth(meth_filter,mc.cores=2)
-
-```
-
-
-
-```{r}
-# get hyper methylated bases
-myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
-#
-# get hypo methylated bases
-myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
-#
-#
-# get all differentially methylated bases
-myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
-
-
-
-
-
-```
 

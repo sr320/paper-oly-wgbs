@@ -3,6 +3,21 @@ title: "Tiles"
 output: html_document
 ---
 
+
+
+
+```{bash}
+unzip ../analyses/myobj_07_3x.zip
+```
+
+
+```{r}
+load("analyses/myobj_07_3x")
+```
+
+
+
+
 ```{r}
 # Function
 tileit <- function(object, win.size=50, step.size=50, cov.bases=3) {
@@ -21,7 +36,7 @@ tileit <- function(object, win.size=50, step.size=50, cov.bases=3) {
 
 # Code to run function on methylKitList
 new.list <- lapply(myobj_07_3x, tileit)
-myobj.tiled <- new("methylRawList", new.list, treatment=myobj@treatment)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj_07_3x@treatment)
 ```
 
 
@@ -45,7 +60,7 @@ PCASamples(meth_filter)
 
 
 ```{r}
-myDiff=calculateDiffMeth(meth_filter,mc.cores=8)
+myDiff=calculateDiffMeth(meth_filter,mc.cores=4)
 
 ```
 
@@ -53,17 +68,56 @@ myDiff=calculateDiffMeth(meth_filter,mc.cores=8)
 
 ```{r}
 # get hyper methylated bases
-myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
+myDiff25p.t.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
 #
 # get hypo methylated bases
-myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
+myDiff25p.t.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
 #
 #
 # get all differentially methylated bases
-myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+myDiff25p.t=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+
+
 
 
 ```
 
+
+
+
+```{r}
+write.table(myDiff25p.t, file = "../analyses/myDiff25p.tile.csv", sep = ",")
+```
+
+
+---
+# Taking the DMLs to a bed
+
+```{r}
+library(readr)
+myDiff25p.tile <- read_csv("../analyses/myDiff25p.tile.csv")
+ 
+```
+
+
+```{r}
+head(myDiff25p.tile)
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+dml1010.tile <-  select(myDiff25p.tile, chr, start, end, meth.diff) %>% 
+  mutate_if(is.numeric, as.integer) 
+
+
+write_delim(dml1010.tile, "../analyses/dml010.tile.bed",  delim = '\t', col_names = FALSE)
+```
 
 
