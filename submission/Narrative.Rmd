@@ -7,7 +7,7 @@ output: html_document
 # Methods
 
 ## _Oysters_
-Adult Olympia oyster originally from Fidalgo Bay, in North Puget Sound (Washington, US) were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Briefly oysters were outplanted in August 2013 and collected in November 2015.
+Adult Olympia oyster originally from Fidalgo Bay, in North Puget Sound (Washington, US) were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Oysters were outplanted in August 2013 and collected in November 2015.
 
 
 ## _DNA methylation Analysis_
@@ -15,18 +15,16 @@ At the end of grow out period, genomic DNA was isolated from whole bodies preser
 
 Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes; 100ng of DNA was used, centrifugation steps were performed at 13,000g, and desulphonation incubation period was 20 minutes.
 
-Illumina sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
+Sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
-Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Raw sequence reads were deposited in the NCBI Short Read Archive (NCBI SRA: SRP163248). Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Raw sequence reads were deposited in the NCBI Short Read Archive (NCBI SRA: SRP163248). Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0; http://multiqc.info/).
 
 
 
 ## _Draft Genome Assembly_
 
-A draft genome was generated in order to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012).
-
-Illumina short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
-Genome assembly data were compiled using QUAST (v4.5; Gurevich et al, 2013).
+A draft genome was generated to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012). Short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
+Genome assembly parameters were compiled using QUAST (v4.5; Gurevich et al, 2013).
 
 
 In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
