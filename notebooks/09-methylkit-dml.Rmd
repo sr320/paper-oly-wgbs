@@ -3,6 +3,9 @@ title: "09-methylkit-dml"
 output: html_document
 ---
 
+
+This notebook was started running Rstudio server on roadrunner - Microsoft version of R.
+
 Running Bismark with  –score_min L,0,-0.6 
 Run by Sam
 
@@ -87,16 +90,11 @@ file.list_11=list('../data_1102/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.dedupli
 )
 ```
 
-
 ```{r}
-source("https://bioconductor.org/biocLite.R")
+source("http://bioconductor.org/biocLite.R")
 biocLite("methylKit")
 ```
-```{r}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("methylKit", version = "3.8")
-```
+
 
 
 
