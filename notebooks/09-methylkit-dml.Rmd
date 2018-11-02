@@ -70,18 +70,20 @@ sort ../data_07/{}_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam \
 ```
 
 
-
+```{bash}
+ls ../data_1102
+```
 
 
 ```{r}
-file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
-                 '../data_07/2_CGATGT_dedup.sorted.bam',
-                 '../data_07/3_TTAGGC_dedup.sorted.bam',
-                 '../data_07/4_TGACCA_dedup.sorted.bam',
-                 '../data_07/5_ACAGTG_dedup.sorted.bam',
-                 '../data_07/6_GCCAAT_dedup.sorted.bam',
-                 '../data_07/7_CAGATC_dedup.sorted.bam',
-                 '../data_07/8_ACTTGA_dedup.sorted.bam'
+file.list_11=list('../data_1102/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data_1102/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam'
 )
 ```
 
@@ -89,6 +91,11 @@ file.list_07=list(  '../data_07/1_ATCACG_dedup.sorted.bam',
 ```{r}
 source("https://bioconductor.org/biocLite.R")
 biocLite("methylKit")
+```
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("methylKit", version = "3.8")
 ```
 
 
