@@ -14,9 +14,7 @@ https://github.com/RobertsLab/resources/issues/430
 
 
 output
-http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/
-
-
+http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
 
 
 
@@ -35,15 +33,17 @@ pwd
 ```
 
 
+http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+
 ```{bash}
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
+curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam
 ```
 
 
