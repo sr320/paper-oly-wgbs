@@ -51,28 +51,6 @@ curl -O  http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v08
 
 
 
-
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-curl -O  http://owl.fish.washington.edu/Athaliana/20180913_oly_WGBSseq_bismark/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam
-
-
-
-
-```{bash}
-find ../data_07/*deduplicated.bam \
-| xargs basename -s _L001_R1_001_trimmed_bismark_bt2.deduplicated.bam | xargs -I{} /home/shared/samtools-1.8/samtools \
-sort ../data_07/{}_L001_R1_001_trimmed_bismark_bt2.deduplicated.bam \
--@ 16 \
--o ../data_07/{}_dedup.sorted.bam
-```
-
-
 ```{bash}
 ls ../data_1102
 ```
