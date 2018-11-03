@@ -28,15 +28,17 @@ myobj.tiled <- new("methylRawList", new.list, treatment=myobj_09@treatment)
 
 
 ```{r}
-filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=2,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=95)
+filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=3,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99)
 
 meth_filter_tile=unite(filtered.myobj_tile, destrand=TRUE)
 
 clusterSamples(meth_filter_tile, dist="correlation", method="ward", plot=TRUE)
 
 
-PCASamples(meth_filter_tile)
+PCASamples(meth_filter_tile,screeplot=FALSE, adj.lim=c(0.0004,0.1),
+           scale=TRUE,center=TRUE,comp=c(1,2),transpose=TRUE,sd.filter=TRUE,
+           sd.threshold=0.5,filterByQuantile=TRUE,obj.return=FALSE)
 
 
 ```

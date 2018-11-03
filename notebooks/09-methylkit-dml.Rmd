@@ -68,11 +68,6 @@ file.list_11=list('../data_1102/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.dedupli
 )
 ```
 
-```{r}
-source("http://bioconductor.org/biocLite.R")
-biocLite("methylKit")
-```
-
 
 
 
@@ -83,190 +78,84 @@ library(methylKit)
 
 
 
-
-```{r}
-myobj_07_10x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=10, treatment = c(0,0,0,0,1,1,1,1))
+```{r, eval = FALSE}
+myobj_09 = processBismarkAln(location = file.list_11, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=2, treatment = c(0,0,0,0,1,1,1,1))
 ```
 
-
-
-
-
-
-```{r}
-save(myobj_07_10x, file = "../analyses/myobj_07_10x")
+```{r, eval = FALSE}
+save(myobj_09, file = "../analyses/myobj_09")
 
 ```
 
 
 ```{r}
-meth_07_10x=unite(myobj_07_10x)
+#load("../analyses/myobj_09")
 ```
-
-```{r}
-clusterSamples(meth_07_10x, dist="correlation", method="ward", plot=TRUE)
-
-```
-
-
-```{r}
-myobj_07_3x = processBismarkAln(location = file.list_07, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=3, treatment = c(0,0,0,0,1,1,1,1))
-```
-
-
-
-```{r}
-save(myobj_07_3x, file = "../analyses/myobj_07_3x")
-
-```
-
-```{bash}
-zip ../analyses/myobj_07_3x.zip ../analyses/myobj_07_3x
-```
-
-
-```{bash}
-unzip ../analyses/myobj_07_3x.zip
-```
-
-
-```{r}
-load("analyses/myobj_07_3x")
-```
-
-
-
-
-```{r}
-tiles=tileMethylCounts(myobj_07_3x,win.size=100000,step.size=100000)
-head(tiles[[1]],3)
-```
-
-
-```{r}
-# Function
-tileit <- function(object, win.size=100, step.size=100, cov.bases=20) {
-  g.meth <- as(object,"GRanges")
-  chrs <- as.character(unique(seqnames(g.meth)))
-  grl <- split(g.meth, seqnames(g.meth))
-  max.length <- max(end(grl))
-  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
-  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
-  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
-  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
-  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
-  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
-  return(rcounts.filtered)
-}
-
-# Code to run function on methylKitList
-new.list <- lapply(myobj_07_3x, tileit)
-myobj.tiled <- new("methylRawList", new.list, treatment=myobj@treatment)
-```
-
 
 
 
 
 
 ```{r}
+getMethylationStats(myobj_09[[2]],plot=FALSE,both.strands=FALSE)
+```
 
-tiles=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=1000)
-head(tiles[[1]],3)
+```{r}
+getMethylationStats(myobj_09[[8]],plot=TRUE,both.strands=FALSE)
+```
 
-
-tiles2=tileMethylCounts(myobj_07_3x,win.size=100,step.size=50)
-head(tiles2[[1]],3)
-
-
-tiles3=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=500)
-head(tiles3[[1]],3)
-
+```{r}
+getCoverageStats(myobj_09[[4]],plot=TRUE,both.strands=FALSE)
+```
 
 
-tiles4=tileMethylCounts(myobj_07_3x,win.size=100,step.size=100)
-head(tiles4[[1]],3)
+```{r}
+filtered.myobj=filterByCoverage(myobj_09,lo.count=3,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99.9)
+
+meth_filter=unite(filtered.myobj, destrand=TRUE)
+
+clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
 
 
+PCASamples(meth_filter)
 
-tiles5=tileMethylCounts(myobj_07_3x,win.size=1000,step.size=750)
-head5(tiles[[1]],3)
+
 ```
 
 
 
 
-
-
 ```{r}
-meth_07_3x=unite(myobj_07_3x)
-```
-
-
-```{r}
-myDiff=calculateDiffMeth(meth_07_3x)
-
-```
-
-
-```{r}
-myDiff50p=getMethylDiff(myDiff,difference=50,qvalue=0.01)
+myDiff=calculateDiffMeth(meth_filter,mc.cores=2)
 
 ```
 
 
 
 ```{r}
+# get hyper methylated bases
+myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
 myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
 
-```
-
-```{r}
-myDiff10p=getMethylDiff(myDiff,difference=10,qvalue=0.01)
-
-```
 
 
-```{r}
-myDiff15p_B=getMethylDiff(myDiff,difference=15,qvalue=0.10)
-
-```
 
 
-```{r}
-myDiff25p
 ```
 
 
 
 
 ```{r}
-myDiff50p
-
+write.table(myDiff25p, file = "../analyses/myDiff25p.tab", sep = "\t")
 ```
 
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
