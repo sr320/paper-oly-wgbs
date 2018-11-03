@@ -3,26 +3,129 @@ title: "Tiles"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+
+```{r}
+# Function
+tileit <- function(object, win.size=50, step.size=50, cov.bases=2) {
+  g.meth <- as(object,"GRanges")
+  chrs <- as.character(unique(seqnames(g.meth)))
+  grl <- split(g.meth, seqnames(g.meth))
+  max.length <- max(end(grl))
+  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
+  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
+  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
+  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
+  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
+  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
+  return(rcounts.filtered)
+}
+
+# Code to run function on methylKitList
+new.list <- lapply(myobj_09, tileit)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj_09@treatment)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=2,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=95)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+meth_filter_tile=unite(filtered.myobj_tile, destrand=TRUE)
 
-```{r cars}
-summary(cars)
+clusterSamples(meth_filter_tile, dist="correlation", method="ward", plot=TRUE)
+
+
+PCASamples(meth_filter_tile)
+
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+
+
+```{r}
+myDiff_tile=calculateDiffMeth(meth_filter_tile,mc.cores=4)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+# get hyper methylated bases
+myDiff25p.t.hyper=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p.t.hypo=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
+myDiff25p.t=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01)
+
+
+
+
+
+```
+
+
+
+
+```{r}
+write.table(myDiff25p.t, file = "../analyses/myDiff25p.tile.csv", sep = ",")
+```
+
+
+```{r}
+# get all differentially methylated bases
+myDiff50p.t=getMethylDiff(myDiff_tile,difference=50,qvalue=0.01)
+
+```
+
+
+
+
+
+
+
+
+---
+# Taking the DMLs to a bed
+
+```{r}
+library(readr)
+myDiff25p.tile <- read_csv("../analyses/myDiff25p.tile.csv")
+ 
+```
+
+
+```{r}
+head(myDiff25p.tile)
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+dml1010.tile <-  select(myDiff25p.tile, chr, start, end, meth.diff) %>% 
+  mutate_if(is.numeric, as.integer) 
+
+
+write_delim(dml1010.tile, "../analyses/dml010.tile.bed",  delim = '\t', col_names = FALSE)
+```
+
+
+```{bash}
+wc -l ../analyses/dml010.tile.bed
+```
+
+```{bash}
+sort ../analyses/dml010.tile.bed | cut -f1 |  uniq | wc -l
+```
+
