@@ -3,6 +3,9 @@ title: "Tiles"
 output: html_document
 ---
 
+```{r}
+load("../analyses/myobj_09")
+```
 
 
 ```{r}
@@ -115,11 +118,11 @@ library(tidyverse)
 
 
 ```{r}
-dml1010.tile <-  select(myDiff25p.tile, chr, start, end, meth.diff) %>% 
+dm1103.tile <-  select(myDiff25p.tile, chr, start, end, meth.diff) %>% 
   mutate_if(is.numeric, as.integer) 
 
 
-write_delim(dml1010.tile, "../analyses/dml010.tile.bed",  delim = '\t', col_names = FALSE)
+write_delim(dm1103.tile, "../analyses/dm1103.tile.bed",  delim = '\t', col_names = FALSE)
 ```
 
 
