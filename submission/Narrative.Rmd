@@ -61,10 +61,17 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 --- ADD % MAPPING
 
 
---- Describe location  DMRs with regard to genes etc
-
 
 _Differential Methylation_
+
+
+Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), 
+
+
+
+
+
+
 
 
 ---How much of the genome is covered, how many CpGs
