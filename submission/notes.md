@@ -43,7 +43,13 @@ RepBase - https://www.girinst.org/server/RepBase/index.php
 
 RMBlast - http://www.repeatmasker.org/RMBlast.html
 
+SNAP - https://doi.org/10.1186/1471-2105-5-59
+
 TRF - Benson G. (1999). Tandem repeats finder: a program to analyze DNA sequences. Nucleic acids research, 27(2), 573-80.
+
+BLASTp - https://doi.org/10.1016%2FS0022-2836%2805%2980360-2
+
+InterProScan 5 - https://doi.org/10.1093/bioinformatics/btu031
 
 ## SUPPLEMENTAL FILE #1
 
