@@ -21,12 +21,12 @@ Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50b
 
 
 
-## _Draft Genome Assembly_
+## _Draft Genome Assembly and Annotation_
 
 A draft genome was generated to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012). Short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
 Genome assembly parameters were compiled using QUAST (v4.5; Gurevich et al, 2013).
 
-
+Genome annotation was performed using MAKER (v.2.31.10; Campbell et al, 2014) configured to use with Message Passing Interface (MPI). A custom repeat library was generated using RepeatModeler (open-1.0.11; https://github.com/rmhubley/RepeatModeler/releases/tag/open-1.0.11). RepeatModeler was configured with the following softare: RepeatMasker (open-4.0.7; ), RECON (v1.08), RepeatScount (v1.0.5; ), RMBLast (2.6.0; ) configured with the isb-2.6.0+-changes-vers2.patch file, and TRF (v4.0.4; ). See Supplemental File #1 for code used for repeat library creation and genome annotation.
 
 
 ## _Differential Methylational analysis_
@@ -65,7 +65,7 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 _Differential Methylation_
 
 
-Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site. 
+Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
 
 
 
@@ -79,7 +79,7 @@ Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 
 ---How many loci examined - I think 23,478
 
 
-When using regions (DMRs), 104 regions were identified found on 89 contigs. 
+When using regions (DMRs), 104 regions were identified found on 89 contigs.
 
 
 
