@@ -39,6 +39,8 @@ RepeatScout - https://doi.org/10.1093/bioinformatics/bti1018
 
 RepeatMasker - http://www.repeatmasker.org/RMDownload.html
 
+RepBase - https://www.girinst.org/server/RepBase/index.php
+
 RMBlast - http://www.repeatmasker.org/RMBlast.html
 
 TRF - Benson G. (1999). Tandem repeats finder: a program to analyze DNA sequences. Nucleic acids research, 27(2), 573-80.
