@@ -29,7 +29,27 @@ methylKit - https://doi.org/10.1186/gb-2012-13-10-r87
 
 QUAST - https://doi.org/10.1093/bioinformatics/btt086
 
+MAKER - https://doi.org/10.1002/0471250953.bi0411s48
 
+RepeatModeler - https://github.com/rmhubley/RepeatModeler/releases/tag/open-1.0.11
+
+RECON - https://dx.doi.org/10.1101%2Fgr.88502
+
+RepeatScout - https://doi.org/10.1093/bioinformatics/bti1018
+
+RepeatMasker - http://www.repeatmasker.org/RMDownload.html
+
+RepBase - https://www.girinst.org/server/RepBase/index.php
+
+RMBlast - http://www.repeatmasker.org/RMBlast.html
+
+SNAP - https://doi.org/10.1186/1471-2105-5-59
+
+TRF - Benson G. (1999). Tandem repeats finder: a program to analyze DNA sequences. Nucleic acids research, 27(2), 573-80.
+
+BLASTp - https://doi.org/10.1016%2FS0022-2836%2805%2980360-2
+
+InterProScan 5 - https://doi.org/10.1093/bioinformatics/btu031
 
 ## SUPPLEMENTAL FILE #1
 

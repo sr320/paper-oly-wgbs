@@ -21,12 +21,14 @@ Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50b
 
 
 
-## _Draft Genome Assembly_
+## _Draft Genome Assembly and Annotation_
 
 A draft genome was generated to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012). Short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
 Genome assembly parameters were compiled using QUAST (v4.5; Gurevich et al, 2013).
 
+Genome annotation was performed using MAKER (v.2.31.10; Campbell et al, 2014) configured to use with Message Passing Interface (MPI). A custom repeat library (Ostrea_lurida_v081-families.fa) for use in MAKER was generated using RepeatModeler (open-1.0.11; https://github.com/rmhubley/RepeatModeler/releases/tag/open-1.0.11). RepeatModeler was configured with the following softare: RepeatMasker (open-4.0.7; http://www.repeatmasker.org/RMDownload.html) configured with Repbase RepeatMasker (v20170127; https://www.girinst.org/server/RepBase/index.php), RECON (v1.08; Bao and Eddy, 2002) with RepeatMasker patch, RepeatScout (v1.0.5; Price et al, 2005), RMBLast (2.6.0; http://www.repeatmasker.org/RMBlast.html) configured with the isb-2.6.0+-changes-vers2 patch file, and TRF (v4.0.4; Benson, 1999).
 
+MAKER was run on two high performance computing (HPC) nodes (Lenov NextScale, E5-2680 v4 dual CPUs, 28 cores, 128GB RAM) on the University of Washington's shared scalable compute cluster (Hyak) using the icc_19-ompi_3.1.2 module (Intel C compiler v19, Open MPI v3.1.2). An Olympia oyster transcriptome assembly produced by our lab (available here: http://eagle.fish.washington.edu/cnidarian/Olurida_transcriptome_v3.fasta) was used for EST data. Protein data used was a concatenation of NCBI proteomes from _Crassostrea gigas_ (GCA_000297895.1_oyster_v9_protein.faa) and _Crassostrea virginica_ (GCF_002022765.2_C_virginica-3.0_protein.faa). _Ab-initio_ gene training was performed twice using the included SNAP software (Korf, 2004). Functional protein annotation was performed using BLASTp (v.2.6.0+; Altschul et al, 1990) against a UniProt BLAST database (FastA file formatted using BLAST 2.8.1+) downloaded on 01/09/2019. The MAKER functions ```maker_functional_gff``` and ```maker_functional_fasta``` both used this same UniProt BLAST database. Protein domain annotation was performed using InterProScan 5(v5.31-70.0; Jones et al, 2014). See Supplemental File #1 for code used for repeat library creation and genome annotation.
 
 
 ## _Differential Methylational analysis_
@@ -65,7 +67,7 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 _Differential Methylation_
 
 
-Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site. 
+Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
 
 
 
@@ -79,7 +81,7 @@ Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 
 ---How many loci examined - I think 23,478
 
 
-When using regions (DMRs), 104 regions were identified found on 89 contigs. 
+When using regions (DMRs), 104 regions were identified found on 89 contigs.
 
 
 
