@@ -129,7 +129,7 @@ http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
 
 
 
-Identification of differentially methylated regions (50 bp windows) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 3x coverage. Differnailly methylated regions were defined as those with at least a 25% difference (p < 0.01) in methylation across oysters grown out at the two locales. All code and analyses is available in the following GitHub repository: URL_NEEDED.
+Identification of differentially methylated regions (50 bp windows) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 5x coverage. Differnailly methylated regions were defined as those with at least a 25% difference (p < 0.01) in methylation across oysters grown out at the two locales. All code and analyses is available in the following GitHub repository: URL_NEEDED.
 
 
 
@@ -187,8 +187,8 @@ save(myobj_11, file = "../analyses/myobj_11")
 
 
 ```{r}
-filtered.myobj=filterByCoverage(myobj_11,lo.count=3,lo.perc=NULL,
-                                      hi.count=50,hi.perc=NULL)
+filtered.myobj=filterByCoverage(myobj_11,lo.count=5,lo.perc=NULL,
+                                      hi.count=100,hi.perc=NULL)
 
 meth_filter=unite(filtered.myobj, destrand=TRUE)
 
@@ -203,7 +203,7 @@ PCASamples(meth_filter)
 
 ```{r}
 # Function
-tileit <- function(object, win.size=50, step.size=50, cov.bases=2) {
+tileit <- function(object, win.size=50, step.size=50, cov.bases=5) {
   g.meth <- as(object,"GRanges")
   chrs <- as.character(unique(seqnames(g.meth)))
   grl <- split(g.meth, seqnames(g.meth))
@@ -224,8 +224,8 @@ myobj.tiled <- new("methylRawList", new.list, treatment=myobj_11@treatment)
 
 
 ```{r}
-filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=3,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=99)
+filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=5,lo.perc=NULL,
+                                      hi.count=100,hi.perc=NULL)
 
 meth_filter_tile=unite(filtered.myobj_tile, destrand=TRUE)
 
@@ -250,6 +250,13 @@ myDiff=calculateDiffMeth(meth_filter,mc.cores=4)
 
 
 
+
+```{r}
+myDiff_tile=calculateDiffMeth(meth_filter_tile,mc.cores=4)
+
+```
+
+
 ```{r}
 # get hyper methylated bases
 myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
@@ -260,6 +267,24 @@ myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
 #
 # get all differentially methylated bases
 myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+
+
+
+
+```
+
+
+```{r}
+# get hyper methylated bases
+myDiff25p_t.hyper=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p_t.hypo=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
+myDiff25p_t=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01)
 
 
 
