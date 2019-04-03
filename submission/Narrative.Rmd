@@ -36,13 +36,243 @@ MAKER was run on two high performance computing (HPC) nodes (Lenov NextScale, E5
 
 In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
+```{bash}
+
+```
+
+
+
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
+
+
+```{bash}
+# Directories and programs
+
+bismark_dir="/gscratch/srlab/programs/Bismark-0.19.0"
+trimmed="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/whole_genome_BSseq_reads/20180830_trimgalore"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+genome="/gscratch/srlab/sam/data/O_lurida/oly_genome_assemblies/Olurida_v081/oly_v081_bismark_genome"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+
+# Convert genome
+
+${bismark_dir}/bismark_genome_preparation \
+--path_to_bowtie ${bowtie2_dir} \
+${genome}
+
+# Run bismark using bisulftie-converted genome
+
+${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+--genome ${genome} \
+--score_min L,0,-0.6 \
+-p 28 \
+--non_directional \
+${trimmed}/1_ATCACG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/2_CGATGT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/3_TTAGGC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/4_TGACCA_L001_R1_001_trimmed.fq.gz \
+${trimmed}/5_ACAGTG_L001_R1_001_trimmed.fq.gz \
+${trimmed}/6_GCCAAT_L001_R1_001_trimmed.fq.gz \
+${trimmed}/7_CAGATC_L001_R1_001_trimmed.fq.gz \
+${trimmed}/8_ACTTGA_L001_R1_001_trimmed.fq.gz
+
+# Deduplicate bam files
+
+${bismark_dir}/deduplicate_bismark \
+--bam \
+--single \
+*.bam
+
+# Methylation extraction
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedgraph \
+--counts \
+--scaffolds \
+--remove_spaces \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 28" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+```
+
+
+OUTPUT
+http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
+
+
 
 
 
 
 Identification of differentially methylated regions (50 bp windows) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 3x coverage. Differnailly methylated regions were defined as those with at least a 25% difference (p < 0.01) in methylation across oysters grown out at the two locales. All code and analyses is available in the following GitHub repository: URL_NEEDED.
 
+
+
+
+```{bash}
+pwd
+```
+
+
+```{bash}
+wget -r \
+--no-directories --no-parent \
+-P ../data/ \
+--quiet \
+-A *deduplicated.sorted.bam \
+http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
+```
+
+
+```{r}
+file.list_11=list('../data/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/2_CGATGT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/3_TTAGGC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/4_TGACCA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/5_ACAGTG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/6_GCCAAT_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/7_CAGATC_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
+                 '../data/8_ACTTGA_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam'
+)
+```
+
+
+
+
+
+```{r}
+library(methylKit)
+```
+
+
+
+```{r, eval = FALSE}
+myobj_11 = processBismarkAln(location = file.list_11, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=2, treatment = c(0,0,0,0,1,1,1,1))
+```
+
+```{r, eval = FALSE}
+save(myobj_11, file = "../analyses/myobj_11")
+
+```
+
+
+```{r}
+#load("../analyses/myobj_11")
+```
+
+
+```{r}
+filtered.myobj=filterByCoverage(myobj_11,lo.count=3,lo.perc=NULL,
+                                      hi.count=50,hi.perc=NULL)
+
+meth_filter=unite(filtered.myobj, destrand=TRUE)
+
+clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
+
+
+PCASamples(meth_filter)
+
+```
+
+
+
+```{r}
+# Function
+tileit <- function(object, win.size=50, step.size=50, cov.bases=2) {
+  g.meth <- as(object,"GRanges")
+  chrs <- as.character(unique(seqnames(g.meth)))
+  grl <- split(g.meth, seqnames(g.meth))
+  max.length <- max(end(grl))
+  numTiles <- floor((max.length - (win.size - step.size))/step.size) + 1
+  starts <- unlist(sapply(numTiles,function(x) 1+0:(x-1)*step.size))
+  ranges <- IRanges(start=starts, width=rep(win.size,length(starts)))
+  all.wins <- GRanges(seqnames=Rle(chrs, numTiles), ranges=ranges)
+  rcounts <- regionCounts(object, all.wins, 0, strand.aware=FALSE)
+  rcounts.filtered <- rcounts[rcounts$coverage >= cov.bases, ]
+  return(rcounts.filtered)
+}
+
+# Code to run function on methylKitList
+new.list <- lapply(myobj_11, tileit)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj_09@treatment)
+```
+
+
+```{r}
+filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=3,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=99)
+
+meth_filter_tile=unite(filtered.myobj_tile, destrand=TRUE)
+
+clusterSamples(meth_filter_tile, dist="correlation", method="ward", plot=TRUE)
+
+
+PCASamples(meth_filter_tile,screeplot=FALSE, adj.lim=c(0.0004,0.1),
+           scale=TRUE,center=TRUE,comp=c(1,2),transpose=TRUE,sd.filter=TRUE,
+           sd.threshold=0.5,filterByQuantile=TRUE,obj.return=FALSE)
+
+
+```
+
+
+
+
+
+```{r}
+myDiff=calculateDiffMeth(meth_filter,mc.cores=4)
+
+```
+
+
+
+```{r}
+# get hyper methylated bases
+myDiff25p.hyper=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff25p.hypo=getMethylDiff(myDiff,difference=25,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
+myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
+
+
+
+
+
+```
+
+
+
+
+```{r}
+write.table(myDiff25p, file = "../analyses/myDiff25p.tab", sep = "\t")
+```
 
 
 
