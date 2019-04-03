@@ -219,7 +219,7 @@ tileit <- function(object, win.size=50, step.size=50, cov.bases=2) {
 
 # Code to run function on methylKitList
 new.list <- lapply(myobj_11, tileit)
-myobj.tiled <- new("methylRawList", new.list, treatment=myobj_09@treatment)
+myobj.tiled <- new("methylRawList", new.list, treatment=myobj_11@treatment)
 ```
 
 
