@@ -37,19 +37,27 @@ MAKER was run on two high performance computing (HPC) nodes (Lenov NextScale, E5
 In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
 
 ```{bash}
-
+wget -r \
+--no-directories --no-parent \
+-P ../data/ \
+--quiet \
+-A *trimmed.fq.gz \
+http://owl.fish.washington.edu/Athaliana/20180503_trimgalore/
 ```
 
 
-
 Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
+
+
+
+
 
 
 ```{bash}
 # Directories and programs
 
 bismark_dir="/gscratch/srlab/programs/Bismark-0.19.0"
-trimmed="/gscratch/scrubbed/samwhite/data/O_lurida/BSseq/whole_genome_BSseq_reads/20180830_trimgalore"
+trimmed="../data/"
 bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
 genome="/gscratch/srlab/sam/data/O_lurida/oly_genome_assemblies/Olurida_v081/oly_v081_bismark_genome"
 samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
