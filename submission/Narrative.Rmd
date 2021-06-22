@@ -1,40 +1,217 @@
 ---
 title: "Narrative"
 output: html_document
+editor_options: 
+  chunk_output_type: inline
 ---
-
 
 # Methods
 
-## _Oysters_
+## *Oysters*
+
 Adult Olympia oyster originally from Fidalgo Bay, in North Puget Sound (Washington, US) were grown out at two locations including Fidalgo Bay and Oyster Bay (located in South Puget Sound). Oysters used in this study were part of a larger experiment described elsewhere (Heare et al 2017). Oysters were outplanted in August 2013 and collected in November 2015.
 
+## *Bisulfite treated DNA library preparation*
 
-## _Bisulfite treated DNA library preparation_
 At the end of grow out period, genomic DNA was isolated from whole bodies preserved in RNAlater (Ambion) from four individuals grown in Fidalgo Bay and four individuals grown in Oyster Bay with DNAzol (Molecular Research, Inc.). Tissue was homogenized with disposable mortar and pestle in 500uL of DNAzol in a 1.7mL snap cap tube. An additional 500uL of DNAzol was added, along with 10uL of RNase A (10mg/mL; ThermoFisher), mixed by inversion, and incubated at room temperature (RT) for 10 minutes. Chloroform (300uL) was added, mixed, incubated at RT for 5 minutes, then centrifuged for 10 mins at 12,000g at RT. The aqueous phase was transferred to a clean tube 1.7mL snap cap tube and subjected to a standard ethanol precipitation. The precipitated DNA was resuspended in 100uL of Buffer EB (Qiagen). Samples were quantified on a Qubit 3.0 (ThermoFisher) using the Qubit dsDNA BR assay (Invitrogen). Sample integrity was verified via agarose gel.
 
 Genomic DNA was subjected to bisulfite conversion using the EZ DNA Methylation-Gold Kit (ZymoResearch) according to the manufacturer's protocol, with the following changes; 100ng of DNA was used, centrifugation steps were performed at 13,000g, and desulphonation incubation period was 20 minutes.
 
 Sequencing libraries were constructed using the TruSeq DNA Methylation Library Kit (Illumina) according to the manufacturer's protcool. Each sample received a unique barcode. Each library was quantified using a Qubit 3.0 and the Qubit dsDNA HS assay (Invitrogen). A single pool, using 10ng of each library, was prepared for sequencing.
 
-Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Raw sequence reads were deposited in the NCBI Short Read Archive (NCBI SRA: SRP163248). Read quality was evaluated with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0; http://multiqc.info/).
+Sequencing was performed in a single flowcell on a HiSeq2500 (Illumina) with 50bp single-end reads. Raw sequence reads were deposited in the NCBI Short Read Archive (NCBI SRA: SRP163248). Read quality was evaluated with FastQC (v0.11.7; <https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>) and visualized with MultiQC (v1.6.dev0; <http://multiqc.info/>).
+
+## *Draft Genome Assembly and Annotation*
+
+A draft genome was generated to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012). Short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File \#1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis. Genome assembly parameters were compiled using QUAST (v4.5; Gurevich et al, 2013).
+
+Genome annotation was performed using MAKER (v.2.31.10; Campbell et al, 2014) configured to use with Message Passing Interface (MPI). A custom repeat library (Ostrea_lurida_v081-families.fa) for use in MAKER was generated using RepeatModeler (open-1.0.11; <https://github.com/rmhubley/RepeatModeler/releases/tag/open-1.0.11>). RepeatModeler was configured with the following softare: RepeatMasker (open-4.0.7; <http://www.repeatmasker.org/RMDownload.html>) configured with Repbase RepeatMasker (v20170127; <https://www.girinst.org/server/RepBase/index.php>), RECON (v1.08; Bao and Eddy, 2002) with RepeatMasker patch, RepeatScout (v1.0.5; Price et al, 2005), RMBLast (2.6.0; <http://www.repeatmasker.org/RMBlast.html>) configured with the isb-2.6.0+-changes-vers2 patch file, and TRF (v4.0.4; Benson, 1999).
+
+MAKER was run on two high performance computing (HPC) nodes (Lenov NextScale, E5-2680 v4 dual CPUs, 28 cores, 128GB RAM) on the University of Washington's shared scalable compute cluster (Hyak) using the icc_19-ompi_3.1.2 module (Intel C compiler v19, Open MPI v3.1.2). An Olympia oyster transcriptome assembly produced by our lab (available here: <http://eagle.fish.washington.edu/cnidarian/Olurida_transcriptome_v3.fasta>) was used for EST data. Protein data used was a concatenation of NCBI proteomes from *Crassostrea gigas* (GCA_000297895.1_oyster_v9_protein.faa) and *Crassostrea virginica* (GCF_002022765.2_C\_virginica-3.0_protein.faa). *Ab-initio* gene training was performed twice using the included SNAP software (Korf, 2004). Functional protein annotation was performed using BLASTp (v.2.6.0+; Altschul et al, 1990) against a UniProt BLAST database (FastA file formatted using BLAST 2.8.1+) downloaded on 01/09/2019. The MAKER functions `maker_functional_gff` and `maker_functional_fasta` both used this same UniProt BLAST database. Protein domain annotation was performed using InterProScan 5(v5.31-70.0; Jones et al, 2014). See Supplemental File \#1 for code used for repeat library creation and genome annotation.
+
+## General DNA Methylation Landscape
+
+In order to describe the general DNA methylation landscape the entirety of the data was combined and mapped to the draft genome. In preparation for bisufite-treated sequence mapping using Bismark (v0.22.0; [<https://github.com/FelixKrueger/Bismark>](https://github.com/FelixKrueger/Bismark){.uri}), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; [<https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/>](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/){.uri}). Post-trimming read quality was assessed with FastQC (v0.11.9; [<https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/){.uri}) and visualized with MultiQC (v1.6.dev0; [<http://multiqc.info/>](http://multiqc.info/){.uri}).
+
+```{bash, eval=FALSE, }
+#!/bin/bash
+## Job Name
+#SBATCH --job-name=olycatC
+## Allocation Definition
+#SBATCH --account=coenv
+#SBATCH --partition=coenv
+## Nodes
+#SBATCH --nodes=1
+## Walltime (days-hours:minutes:seconds format)
+#SBATCH --time=5-00:00:00
+## Memory per node
+#SBATCH --mem=100G
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=sr320@uw.edu
+## Specify the working directory for this job
+#SBATCH --chdir=/gscratch/scrubbed/sr320/061421-olyC
 
 
 
-## _Draft Genome Assembly and Annotation_
+# Directories and programs
+bismark_dir="/gscratch/srlab/programs/Bismark-0.22.3"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+reads_dir="/gscratch/srlab/sr320/data/olurida-bs/"
+fastqc="/gscratch/srlab/programs/fastqc_v0.11.9/fastqc"
+genome_folder="/gscratch/srlab/sr320/data/olurida-bs/genome/"
 
-A draft genome was generated to map bisulfite treated sequence reads. The draft genome for the Olympia oyster was created using a combination of short read sequence data (Illumina HiSeq4000) combined with long read sequence data (PacBio RSII) using PBJelly (PBSuite_15.8.24; English et al, 2012). Short reads (NCBI SRA: SRP072461) were assembled using SOAPdenovo (Li et al, 2008). The scaffolds (n=765,755) from this assembly were combined with the PacBio long read data (NCBI SRA: SRR5809355) using PBJelly (PBSuite_15.8.24; English et al, 2012). Assembly with PBJelly was performed using the default settings. See Supplemental File #1 for code used to run assembly. Only contigs longer than 1000 bp were used for further analysis.
-Genome assembly parameters were compiled using QUAST (v4.5; Gurevich et al, 2013).
-
-Genome annotation was performed using MAKER (v.2.31.10; Campbell et al, 2014) configured to use with Message Passing Interface (MPI). A custom repeat library (Ostrea_lurida_v081-families.fa) for use in MAKER was generated using RepeatModeler (open-1.0.11; https://github.com/rmhubley/RepeatModeler/releases/tag/open-1.0.11). RepeatModeler was configured with the following softare: RepeatMasker (open-4.0.7; http://www.repeatmasker.org/RMDownload.html) configured with Repbase RepeatMasker (v20170127; https://www.girinst.org/server/RepBase/index.php), RECON (v1.08; Bao and Eddy, 2002) with RepeatMasker patch, RepeatScout (v1.0.5; Price et al, 2005), RMBLast (2.6.0; http://www.repeatmasker.org/RMBlast.html) configured with the isb-2.6.0+-changes-vers2 patch file, and TRF (v4.0.4; Benson, 1999).
-
-MAKER was run on two high performance computing (HPC) nodes (Lenov NextScale, E5-2680 v4 dual CPUs, 28 cores, 128GB RAM) on the University of Washington's shared scalable compute cluster (Hyak) using the icc_19-ompi_3.1.2 module (Intel C compiler v19, Open MPI v3.1.2). An Olympia oyster transcriptome assembly produced by our lab (available here: http://eagle.fish.washington.edu/cnidarian/Olurida_transcriptome_v3.fasta) was used for EST data. Protein data used was a concatenation of NCBI proteomes from _Crassostrea gigas_ (GCA_000297895.1_oyster_v9_protein.faa) and _Crassostrea virginica_ (GCF_002022765.2_C_virginica-3.0_protein.faa). _Ab-initio_ gene training was performed twice using the included SNAP software (Korf, 2004). Functional protein annotation was performed using BLASTp (v.2.6.0+; Altschul et al, 1990) against a UniProt BLAST database (FastA file formatted using BLAST 2.8.1+) downloaded on 01/09/2019. The MAKER functions ```maker_functional_gff``` and ```maker_functional_fasta``` both used this same UniProt BLAST database. Protein domain annotation was performed using InterProScan 5(v5.31-70.0; Jones et al, 2014). See Supplemental File #1 for code used for repeat library creation and genome annotation.
-
-
-## _Differential Methylational analysis_
+source /gscratch/srlab/programs/scripts/paths.sh
 
 
-In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). Post-trimming read quality was assessed with FastQC (v0.11.7; https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and visualized with MultiQC (v1.6.dev0;http://multiqc.info/).
+# 
+# ${bismark_dir}/bismark_genome_preparation \
+# --verbose \
+# --parallel 28 \
+# --path_to_aligner ${bowtie2_dir} \
+# ${genome_folder}
+# 
+
+
+
+
+#FastQC 
+
+#Populate array with FastQ files
+#fastq_array=(/gscratch/srlab/sr320/data/cg-big/*.fq.gz)
+
+#Pass array contents to new variable
+#fastqc_list=$(echo "${fastq_array[*]}")
+
+#Run FastQC
+# ${fastqc} \
+# --threads 28 \
+# /gscratch/srlab/sr320/data/olurida-bs/combined.fq.gz \
+# -o /gscratch/scrubbed/sr320/061021-oly/
+
+
+
+
+
+#1_ATCACG_L001_R1_001_trimmed.fq.gz
+
+find ${reads_dir}combi* \
+| xargs basename -s .fq.gz | xargs -I{} ${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+-genome ${genome_folder} \
+-p 4 \
+-score_min L,0,-0.6 \
+${reads_dir}{}.fq.gz  
+
+
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${bismark_dir}/deduplicate_bismark \
+--bam \
+--single \
+{}.bam
+
+
+
+${bismark_dir}/bismark_methylation_extractor \
+--single-end \
+--comprehensive \
+--merge_non_CpG \
+--bedGraph \
+--counts \
+--scaffolds \
+--multicore 28 \
+--buffer_size 75% \
+--report \
+*deduplicated.bam
+
+
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+
+
+
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+
+
+find *deduplicated.bismark.cov.gz \
+| xargs basename -s _bismark_bt2.deduplicated.bismark.cov.gz \
+| xargs -n 1 -P 28 -I{} ${bismark_dir}/coverage2cytosine \
+--genome_folder ${genome_folder} \
+-o {} \
+--merge_CpG \
+--zero_based \
+{}_bismark_bt2.deduplicated.bismark.cov.gz
+
+#creating bedgraphs post merge
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_10x.bedgraph
+done
+
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_5x.bedgraph
+done
+
+
+#creating tab files with raw count for glms
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_10x.tab
+done
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_5x.tab
+done
+
+
+
+ #run multiqc
+/gscratch/srlab/programs/anaconda3/bin/multiqc .
+
+
+```
+
+## *Differential Methylational analysis*
+
+In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; <https://github.com/FelixKrueger/Bismark>), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; <https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/>). Post-trimming read quality was assessed with FastQC (v0.11.7; <https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>) and visualized with MultiQC (v1.6.dev0;<http://multiqc.info/>).
 
 ```{bash}
 wget -r \
@@ -45,13 +222,7 @@ wget -r \
 http://owl.fish.washington.edu/Athaliana/20180503_trimgalore/
 ```
 
-
-Bismark (v0.19.0; https://github.com/FelixKrueger/Bismark) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
-
-
-
-
-
+Bismark (v0.19.0; <https://github.com/FelixKrueger/Bismark>) was used to prepare the draft genome for methylation analysis and trimmed reads were mapped to that preparation (see below) using Bismark.
 
 ```{bash}
 # Directories and programs
@@ -87,8 +258,6 @@ ${trimmed}/7_CAGATC_L001_R1_001_trimmed.fq.gz \
 ${trimmed}/8_ACTTGA_L001_R1_001_trimmed.fq.gz
 
 ```
-
-
 
 ```{bash}
 
@@ -139,24 +308,13 @@ xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
 ```
 
+OUTPUT <http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/>
 
-OUTPUT
-http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
-
-
-
-
-
-
-Identification of differentially methylated regions (50 bp windows) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 5x coverage. Differnailly methylated regions were defined as those with at least a 25% difference (p < 0.01) in methylation across oysters grown out at the two locales. All code and analyses is available in the following GitHub repository: URL_NEEDED.
-
-
-
+Identification of differentially methylated regions (50 bp windows) using R (v3.4.4; R Studio v1.1.383) and the MethylKit R package (v1.4.1; Akalin et al, 2012), with a minimum of 5x coverage. Differnailly methylated regions were defined as those with at least a 25% difference (p \< 0.01) in methylation across oysters grown out at the two locales. All code and analyses is available in the following GitHub repository: URL_NEEDED.
 
 ```{bash}
 pwd
 ```
-
 
 ```{bash}
 wget -r \
@@ -166,7 +324,6 @@ wget -r \
 -A *deduplicated.sorted.bam \
 http://gannet.fish.washington.edu/Atumefaciens/20181015_oly_WGBSseq_v081/
 ```
-
 
 ```{r}
 file.list_11=list('../data/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated.sorted.bam',
@@ -180,15 +337,9 @@ file.list_11=list('../data/1_ATCACG_L001_R1_001_trimmed_bismark_bt2.deduplicated
 )
 ```
 
-
-
-
-
 ```{r}
 library(methylKit)
 ```
-
-
 
 ```{r, eval = FALSE}
 myobj_11 = processBismarkAln(location = file.list_11, sample.id = list("1","2","3","4","5","6","7","8"), assembly = "v081", read.context="CpG", mincov=2, treatment = c(0,0,0,0,1,1,1,1))
@@ -199,11 +350,9 @@ save(myobj_11, file = "../analyses/myobj_11")
 
 ```
 
-
 ```{r}
 #load("../analyses/myobj_11")
 ```
-
 
 ```{r}
 filtered.myobj=filterByCoverage(myobj_11,lo.count=5,lo.perc=NULL,
@@ -217,8 +366,6 @@ clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
 PCASamples(meth_filter)
 
 ```
-
-
 
 ```{r}
 # Function
@@ -241,7 +388,6 @@ new.list <- lapply(myobj_11, tileit)
 myobj.tiled <- new("methylRawList", new.list, treatment=myobj_11@treatment)
 ```
 
-
 ```{r}
 filtered.myobj_tile=filterByCoverage(myobj.tiled,lo.count=5,lo.perc=NULL,
                                       hi.count=100,hi.perc=NULL)
@@ -258,23 +404,15 @@ PCASamples(meth_filter_tile,screeplot=FALSE, adj.lim=c(0.0004,0.1),
 
 ```
 
-
-
-
-
 ```{r}
 myDiff=calculateDiffMeth(meth_filter,mc.cores=4)
 
 ```
 
-
-
-
 ```{r}
 myDiff_tile=calculateDiffMeth(meth_filter_tile,mc.cores=4)
 
 ```
-
 
 ```{r}
 # get hyper methylated bases
@@ -293,7 +431,6 @@ myDiff25p=getMethylDiff(myDiff,difference=25,qvalue=0.01)
 
 ```
 
-
 ```{r}
 # get hyper methylated bases
 myDiff25p_t.hyper=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01,type="hyper")
@@ -311,57 +448,34 @@ myDiff25p_t=getMethylDiff(myDiff_tile,difference=25,qvalue=0.01)
 
 ```
 
-
-
-
 ```{r}
 write.table(myDiff25p, file = "../analyses/myDiff25p.tab", sep = "\t")
 ```
 
-
-
-
 -- ADD ANNOTATION METHODS
 
-
-All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File #1 for code.
-
-
+All of the TrimGalore!, FastQC, MultiQC, and Bismark processing was performed on a compute node (CentOS 7.4.1708) in the University of Washington's high performance computing (HPC) cluster. See Supplemental File \#1 for code.
 
 # Results
 
-_DNA Sequence Data Availablity_
+*DNA Sequence Data Availablity*
 
-Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library. The draft genome assembly yielded 213,264 contigs, comprised of 1.2Mbp with an N50 of 12,433. The assembly contained 894 contigs >= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
+Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per library. The draft genome assembly yielded 213,264 contigs, comprised of 1.2Mbp with an N50 of 12,433. The assembly contained 894 contigs \>= 50,000bp. The largest contig was 194,507bp (Table NUMBER).
 
 --- ADD % MAPPING
 
+## General DNA Methylation Landscape
 
+see <https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/061421-olyC/combined_bismark_bt2_SE_report.txt>
 
-_Differential Methylation_
-
+*Differential Methylation*
 
 Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
-
-
-
-
-
-
-
 
 ---How much of the genome is covered, how many CpGs
 
 ---How many loci examined - I think 23,478
 
-
 When using regions (DMRs), 104 regions were identified found on 89 contigs.
 
-
-
-
-
-
-
-Image showing Coverage and mCpG
-![igv](https://github.com/sr320/nb-2018/blob/master/O_lurida/analyses/wgbs-igv.png?raw=true)
+Image showing Coverage and mCpG ![igv](https://github.com/sr320/nb-2018/blob/master/O_lurida/analyses/wgbs-igv.png?raw=true)
