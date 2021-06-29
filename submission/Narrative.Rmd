@@ -213,6 +213,63 @@ In order to describe the general DNA methylation landscape the entirety of the d
 
     ```
 
+Bedgraph used to describe the location of methylation
+
+```{r}
+library(tidyverse)
+
+```
+
+Genome coverage
+
+```{r}
+cov <- read.csv("../data_21/combined.CpG_report.merged_CpG_evidence.cov.txt", sep="\t", header = FALSE)
+```
+
+```{r}
+cov2 <- mutate(cov, cvr = V5 + V6)
+```
+
+```{r}
+ggplot(cov2, aes(x=cvr)) +
+   geom_histogram(binwidth = 1) +
+  scale_y_log10(labels = scales::comma)
+   
+```
+
+```{r}
+gm <- read.csv("../data_21/combined_10x.bedgraph", sep="\t", header = FALSE)
+```
+
+```{r}
+ggplot(gm, aes(x=V4)) +
+   geom_histogram(bins = 50) +
+   coord_cartesian(ylim=c(0, 40000))
+
+```
+
+```{r}
+meth <- filter (gm, V4>50)
+ write.table(meth, file = "../data_21/meth_loc.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+```
+
+```{bash}
+ /Applications/bioinfo/bedtools2/bin/intersectbed \
+ -u \
+ -a ../data_21/meth_loc.bed \
+ -b ../data_21/Olurida_v081-20190709.gene.gff |
+ wc -l
+```
+
+```{bash}
+/Applications/bioinfo/bedtools2/bin/intersectbed \
+ -wa \
+ -a ../data_21/meth_loc.bed \
+ -b ../data_21/Olurida_v081-20190709.gene.gff |
+ wc -l
+
+```
+
 ## *Differential Methylational analysis*
 
 In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; <https://github.com/FelixKrueger/Bismark>), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; <https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/>). Post-trimming read quality was assessed with FastQC (v0.11.7; <https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>) and visualized with MultiQC (v1.6.dev0;<http://multiqc.info/>).
