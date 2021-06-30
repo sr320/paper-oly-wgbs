@@ -521,12 +521,11 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 
 ## General DNA Methylation Landscape
 
-
-```{bash include=FALSE}
-wc -l ../data_21/combined_10x.bedgraph
+```{r, cache = TRUE, include = FALSE}
+cg <- read.csv("../data_21/Olurida_v081_CG-motif.gff", sep="\t", header = FALSE)
 ```
 
-Of the `nrow(gm)` loci in the draft genome x had corresponding reads map with x loci covered at 5x
+Of the `r nrow(cg)` loci in the draft genome `r nrow(cov)` (`r (nrow(cov)/nrow(cg))*100`%) had corresponding reads mapping, with `r nrow(cov5)` loci covered at 5x and `r nrow(cov10)` loci covered at 10x. 
 
 
 
@@ -549,9 +548,9 @@ ggplot(cov2, aes(x=cvr)) +
 
 
 ```{r}
-ggplot(cov10, aes(x=V4)) +
+ggplot(cov5, aes(x=V4)) +
    geom_histogram(bins = 50) +
-   coord_cartesian(ylim=c(0, 40000))
+   coord_cartesian(ylim=c(0, 800000))
 
 ```
 
