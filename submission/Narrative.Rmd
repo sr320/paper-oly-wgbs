@@ -525,6 +525,14 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 
 --- ADD % MAPPING
 
+## General DNA Methylation Landscape
+
+```{bash}
+wc -l ../data_21/combined_10x.bedgraph
+```
+
+Of the `nrow(gm)` loci in the draft genome x had corresponding reads map with x loci covered at 5x
+
 *Differential Methylation*
 
 Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
