@@ -234,36 +234,6 @@ cov10 <- read.csv("../data_21/combined_10x.bedgraph", sep="\t", header = FALSE)
 
 
 
-
-
-
-
-
-
-
-
-```{r}
-meth <- filter (gm, V4>50)
- write.table(meth, file = "../data_21/meth_loc.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
-```
-
-```{bash}
- /Applications/bioinfo/bedtools2/bin/intersectbed \
- -u \
- -a ../data_21/meth_loc.bed \
- -b ../data_21/Olurida_v081-20190709.gene.gff |
- wc -l
-```
-
-```{bash}
-/Applications/bioinfo/bedtools2/bin/intersectbed \
- -wa \
- -a ../data_21/meth_loc.bed \
- -b ../data_21/Olurida_v081-20190709.gene.gff |
- wc -l
-
-```
-
 ## *Differential Methylational analysis*
 
 In preparation for bisufite-treated sequence mapping using Bismark (v0.19.0; <https://github.com/FelixKrueger/Bismark>), 10bp from the 5' end of each read were trimmed using TrimGalore! (v0.4.5; <https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/>). Post-trimming read quality was assessed with FastQC (v0.11.7; <https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>) and visualized with MultiQC (v1.6.dev0;<http://multiqc.info/>).
@@ -521,14 +491,9 @@ Bisulfite treated DNA sequencing resulted in 11,954,873 average reads per librar
 
 ## General DNA Methylation Landscape
 
-```{r, cache = TRUE, include = FALSE}
+```{r cg, cache = TRUE, include = FALSE}
 cg <- read.csv("../data_21/Olurida_v081_CG-motif.gff", sep="\t", header = FALSE)
 ```
-
-Of the `r nrow(cg)` loci in the draft genome `r nrow(cov)` (`r (nrow(cov)/nrow(cg))*100`%) had corresponding reads mapping, with `r nrow(cov5)` loci covered at 5x and `r nrow(cov10)` loci covered at 10x. 
-
-
-
 ```{r coverage, include=FALSE}
 
 
@@ -544,21 +509,37 @@ ggplot(cov2, aes(x=cvr)) +
   
 
 ```
-
-
-
-```{r}
+```{r distibution include=FALSE}
 ggplot(cov5, aes(x=V4)) +
    geom_histogram(bins = 50) +
    coord_cartesian(ylim=c(0, 800000))
 
 ```
+```{r methCpG, include=FALSE}
+meth <- filter (cov5, V4>=50)
+ write.table(meth, file = "../data_21/meth_loc.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE)
+lessmeth <- filter (cov5, V4<50)
+ write.table(lessmeth, file = "../data_21/lessmeth_loc.bed", sep = "\t", col.names = FALSE, row.names = FALSE, quote = FALSE) 
+nrow(meth)+nrow(lessmeth)
+```
+```{bash methgene, eval=FALSE, include=FALSE}
+ /Applications/bioinfo/bedtools2/bin/intersectbed \
+ -u \
+ -wa \
+ -a ../data_21/meth_loc.bed \
+ -b ../data_21/Olurida_v081-20190709.gene.gff |
+ wc -l
+```
+```{bash lessmethgene, eval=FALSE, include=FALSE}}
+/Applications/bioinfo/bedtools2/bin/intersectbed \
+ -u \
+ -wa \
+ -a ../data_21/lessmeth_loc.bed \
+ -b ../data_21/Olurida_v081-20190709.gene.gff | wc -l 
 
+```
 
-
-
-
-
+Of the `r nrow(cg)` loci in the draft genome `r nrow(cov)` (`r (nrow(cov)/nrow(cg))*100`%) had corresponding mapped reads, with `r nrow(cov5)` loci covered at 5x and `r nrow(cov10)` loci covered at 10x. When considering loci with 5x coverage `r ((188345)/nrow(meth))*100`% methylated loci overlapped with predicted genes while `r ((242856)/nrow(lessmeth))*100`% of less methylated loci overlapped with predicted genes.
 
 
 
