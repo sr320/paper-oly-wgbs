@@ -3,6 +3,7 @@ title: "Narrative"
 output: html_document
 ---
 
+_required programs_
 ```{r load packages, echo=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(methylKit)
@@ -440,44 +441,6 @@ myobj_21 = processBismarkAln(location = file.list_21, sample.id = list("1","2","
 load("../analyses/myobj_21")
 ```
 
-```{r message=FALSE, warning=FALSE}
-filtered.myobj=filterByCoverage(myobj_21,lo.count=10,lo.perc=NULL,
-                                      hi.count=NULL,hi.perc=NULL)
-
-meth_filter=unite(filtered.myobj, min.per.group=2L, destrand=TRUE)
-
-clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
-
-
-PCASamples(meth_filter)
-
-```
-
-```{r}
-myDiff=calculateDiffMeth(meth_filter,mc.cores=8)
-
-```
-
-```{r}
-# get hyper methylated bases
-myDiff20p.hyper=getMethylDiff(myDiff,difference=20,qvalue=0.01,type="hyper")
-#
-# get hypo methylated bases
-myDiff20p.hypo=getMethylDiff(myDiff,difference=20,qvalue=0.01,type="hypo")
-#
-#
-# get all differentially methylated bases
-myDiff20p=getMethylDiff(myDiff,difference=20,qvalue=0.01)
-
-
-
-
-
-```
-
-```{r}
-write.table(myDiff20p, file = "../analyses/myDiff20p.tab", sep = "\t")
-```
 
 -- ADD ANNOTATION METHODS
 
@@ -544,16 +507,48 @@ ggplot(cov5, aes(x=V4)) +
 
 ```
 
-\`\`\`
+
 
 *Differential Methylation*
 
-Fifty-three differentially methylated regions were identfied. Of these DMRs, 32 were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
 
----How much of the genome is covered, how many CpGs
+```{r message=FALSE, warning=FALSE}
+filtered.myobj=filterByCoverage(myobj_21,lo.count=10,lo.perc=NULL,
+                                      hi.count=NULL,hi.perc=NULL)
 
----How many loci examined - I think 23,478
+meth_filter=unite(filtered.myobj, min.per.group=2L, destrand=TRUE)
 
-When using regions (DMRs), 104 regions were identified found on 89 contigs.
+clusterSamples(meth_filter, dist="correlation", method="ward", plot=TRUE)
 
-Image showing Coverage and mCpG ![igv](https://github.com/sr320/nb-2018/blob/master/O_lurida/analyses/wgbs-igv.png?raw=true)
+
+PCASamples(meth_filter)
+
+```
+
+```{r include=FALSE}
+myDiff=calculateDiffMeth(meth_filter,mc.cores=8)
+
+```
+
+```{r}
+# get hyper methylated bases
+myDiff.hyper=getMethylDiff(myDiff,difference=20,qvalue=0.01,type="hyper")
+#
+# get hypo methylated bases
+myDiff.hypo=getMethylDiff(myDiff,difference=20,qvalue=0.01,type="hypo")
+#
+#
+# get all differentially methylated bases
+myDiff=getMethylDiff(myDiff,difference=20,qvalue=0.01)
+
+```
+
+
+
+```{r}
+write.table(myDiff20p, file = "../analyses/myDiff20p.tab", sep = "\t")
+```
+
+There were `nrow(myDiff)` differentially methylated loci iddentifed. Of the DMLs. Fifty-three differentially methylated regions were identfied. Of these DMRs,  were hypomethylated in oysters grown in Oyster Bay (foreign site), and 21 were hypermethylated in oysters grown in the foreign site.
+
+
